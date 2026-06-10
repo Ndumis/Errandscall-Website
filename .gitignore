@@ -1,0 +1,8 @@
+# Ignore Claude Code project directories
+.claude/
+
+### VS Code ###
+.vscode/
+
+### docx ###
+.docx/

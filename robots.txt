@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /portal/
+Disallow: /php/
+Disallow: /includes/
+
+Sitemap: https://www.errandscall.co.za/sitemap.xml
