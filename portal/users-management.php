@@ -32,18 +32,24 @@ $conn->close();
     </div>
 	
 	<!-- Search and Filter -->
-	<div class="search-box">
-		<input type="text" id="searchUsers" placeholder="Search users..." onkeyup="searchUsers()">
-		<select onchange="filterByRole(this.value)">
-			<option value="all">All Roles</option>
-			<option value="admin">Admin</option>
-			<option value="manager">Manager</option>
-			<option value="worker">Worker</option>
-			<option value="customer">Customer</option>
-		</select>
-		<button class="btn-refresh" onclick="refreshUsers()">
-			<i class="fas fa-sync-alt"></i> Refresh
-		</button>
+	<div class="row mb-3">
+		<div class="col-md-5 col-lg-4 mb-2 mb-md-0">
+			<input type="text" class="form-control" id="searchUsers" placeholder="Search users..." onkeyup="searchUsers()">
+		</div>
+		<div class="col-md-4 col-lg-3 mb-2 mb-md-0">
+			<select class="form-control" id="roleFilter" onchange="filterByRole(this.value)">
+				<option value="all">All Roles</option>
+				<option value="admin">Admin</option>
+				<option value="manager">Manager</option>
+				<option value="worker">Worker</option>
+				<option value="customer">Customer</option>
+			</select>
+		</div>
+		<div class="col-md-3 col-lg-2">
+			<button type="button" class="btn btn-outline-primary btn-block" onclick="refreshUsers()">
+				<i class="fas fa-sync-alt mr-1"></i>Refresh
+			</button>
+		</div>
 	</div>
 
     <!-- Users Table -->
@@ -61,6 +67,7 @@ $conn->close();
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Role</th>
+                            <th>Status</th>
                             <th>Date of Birth</th>
                             <th>Registered</th>
                             <th>Actions</th>
@@ -84,26 +91,29 @@ $conn->close();
                                         <?php echo ucfirst($user['role']); ?>
                                     </span>
                                 </td>
+                                <td>
+                                    <span class="badge status-badge status-<?php echo $user['status']; ?>">
+                                        <?php echo ucfirst($user['status']); ?>
+                                    </span>
+                                </td>
                                 <td><?php echo date('M j, Y', strtotime($user['dob'])); ?></td>
                                 <td><?php echo date('M j, Y', strtotime($user['created_at'])); ?></td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary edit-user" data-user-id="<?php echo $user['id']; ?> " 
+                                        <a href="profile.php?id=<?php echo $user['id']; ?>" class="btn btn-outline-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <button class="btn btn-outline-primary edit-user" data-user-id="<?php echo $user['id']; ?>"
                                                 <?php echo ($user['id'] == $_SESSION['user_id'] || ($user['role'] == 'admin' && !isAdmin())) ? 'disabled' : ''; ?>>
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <?php if (isAdmin() && $user['id'] != $_SESSION['user_id'] && $user['role'] != 'admin'): ?>
-                                        <button class="btn btn-outline-danger delete-user" data-user-id="<?php echo $user['id']; ?>">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8" class="text-center py-4">
+                                <td colspan="9" class="text-center py-4">
                                     <i class="fas fa-users fa-2x text-muted mb-3"></i>
                                     <p class="text-muted">No users found.</p>
                                 </td>
@@ -112,6 +122,9 @@ $conn->close();
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Users pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="usersPagination"></ul>
+            </nav>
         </div>
     </div>
 
@@ -209,7 +222,7 @@ $conn->close();
                     <div class="alert alert-info">
                         <small>
                             <i class="fas fa-info-circle mr-1"></i>
-                            The user will be able to login with their ID Number or Email address.
+                            The user will be able to login with their Id Number or Email address.
                         </small>
                     </div>
                 </div>
@@ -245,6 +258,7 @@ $conn->close();
                             <label>Role *</label>
                             <select class="form-control" name="role" id="editRole" required>
                                 <option value="">Select Role</option>
+                                <option value="customer">Customer</option>
                                 <option value="worker">Worker</option>
                                 <option value="manager">Manager</option>
                                 <?php if (isAdmin()): ?>

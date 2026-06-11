@@ -25,7 +25,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
         
     case 'POST':
-        sendChatMessage($conn, $user_id);
+        if (isset($_POST['action']) && $_POST['action'] === 'toggle_session') {
+            toggleChatSession($conn, $user_id);
+        } else {
+            sendChatMessage($conn, $user_id);
+        }
         break;
         
     case 'PUT':
@@ -354,6 +358,45 @@ function sendChatNotification($conn, $receiver_id, $sender_id, $message) {
     
     // Here you could also integrate with email notifications
     // sendEmailNotification($receiver_id, $sender_name, $message);
+}
+
+function toggleChatSession($conn, $user_id) {
+    global $response;
+
+    if (!hasAccess(['admin', 'manager'])) {
+        $response['message'] = 'Access denied';
+        return;
+    }
+
+    $chat_session_id = intval($_POST['session_id']);
+
+    $stmt = $conn->prepare("SELECT is_active FROM chat_sessions WHERE id = ?");
+    $stmt->bind_param("i", $chat_session_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        $response['message'] = 'Chat session not found';
+        $stmt->close();
+        return;
+    }
+
+    $session = $result->fetch_assoc();
+    $stmt->close();
+
+    $new_status = $session['is_active'] ? 0 : 1;
+
+    $update_stmt = $conn->prepare("UPDATE chat_sessions SET is_active = ? WHERE id = ?");
+    $update_stmt->bind_param("ii", $new_status, $chat_session_id);
+
+    if ($update_stmt->execute()) {
+        $response['success'] = true;
+        $response['message'] = $new_status ? 'Conversation reopened' : 'Conversation closed';
+        $response['is_active'] = $new_status;
+    } else {
+        $response['message'] = 'Error updating chat session';
+    }
+    $update_stmt->close();
 }
 
 function deleteChatMessage($conn, $user_id) {

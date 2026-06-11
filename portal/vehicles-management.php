@@ -125,12 +125,12 @@ $conn->close();
                             <button class="btn btn-sm btn-outline-danger delete-vehicle" data-vehicle-id="<?php echo $vehicle['id']; ?>">
                                 <i class="fas fa-trash mr-1"></i>Delete
                             </button>
-                            <?php else: ?>
-                            <span class="text-muted">View Only</span>
-                            <?php endif; ?>
                             <button class="btn btn-sm btn-gradient request-service" data-vehicle-id="<?php echo $vehicle['id']; ?>">
                                 <i class="fas fa-tasks mr-1"></i>Request Service
                             </button>
+                            <?php else: ?>
+                            <span class="text-muted">View Only</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

@@ -30,12 +30,44 @@ $(document).ready(function() {
             deactivateAccount();
         }
     });
+
+    // Activate / Deactivate another user (admin viewing a user's profile)
+    $('#toggleStatusBtn').on('click', function() {
+        const userId = $(this).data('user-id');
+        const currentStatus = $(this).data('current-status');
+        const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+        const action = newStatus === 'active' ? 'activate' : 'deactivate';
+
+        if (!confirm(`Are you sure you want to ${action} this user?`)) {
+            return;
+        }
+
+        $.ajax({
+            url: 'php/toggle-user-status.php',
+            type: 'POST',
+            data: { user_id: userId, status: newStatus },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    showAlert(response.message, 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showAlert(response.message, 'danger');
+                }
+            },
+            error: function() {
+                showAlert('An error occurred. Please try again.', 'danger');
+            }
+        });
+    });
 });
 
 function loadProfileActivity() {
+    const targetUserId = $('#profileActivity').data('user-id');
     $.ajax({
         url: 'php/get-profile-activity.php',
         type: 'GET',
+        data: targetUserId ? { id: targetUserId } : {},
         dataType: 'json',
         success: function(response) {
             if (response.success && response.activities) {

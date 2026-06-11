@@ -11,6 +11,15 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+
+// Admins/managers can view another user's activity via ?id=
+if (isset($_GET['id']) && hasAccess(['admin', 'manager'])) {
+    $requested_id = intval($_GET['id']);
+    if ($requested_id > 0) {
+        $user_id = $requested_id;
+    }
+}
+
 $conn = getDBConnection();
 
 try {

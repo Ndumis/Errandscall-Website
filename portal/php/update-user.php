@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 include('../config/database.php');
 include('../includes/auth-check.php');
-session_start();
 
 $response = ['success' => false, 'message' => ''];
 

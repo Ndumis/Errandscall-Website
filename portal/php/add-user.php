@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 include('../config/database.php');
 include('../includes/auth-check.php');
-session_start();
 
 $response = ['success' => false, 'message' => ''];
 
@@ -61,8 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     
     // Insert user
-    $stmt = $conn->prepare("INSERT INTO users (id_number, fullname, email, phone, dob, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $id_number, $fullname, $email, $phone, $dob, $hashed_password, $role);
+    $status = 'active';
+    $stmt = $conn->prepare("INSERT INTO users (id_number, fullname, email, phone, dob, password, role, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssss", $id_number, $fullname, $email, $phone, $dob, $hashed_password, $role, $status);
     
     if ($stmt->execute()) {
         $response['success'] = true;

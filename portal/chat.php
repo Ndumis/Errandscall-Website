@@ -113,7 +113,7 @@ $conn->close();
 														<div class="mt-2">
 															<?php if ($service['chat_session_id']): ?>
 																<button class="btn btn-sm btn-outline-primary w-100" 
-																		onclick="selectChatSession(<?php echo $service['chat_session_id']; ?>, '<?php echo hasAccess(['customer']) ? htmlspecialchars($service['worker_name']) : htmlspecialchars($service['customer_name']); ?>', <?php echo $service['id']; ?>)">
+																		onclick="selectChatSession(this, <?php echo $service['chat_session_id']; ?>, '<?php echo hasAccess(['customer']) ? htmlspecialchars($service['worker_name']) : htmlspecialchars($service['customer_name']); ?>', <?php echo $service['id']; ?>)">
 																	<i class="fas fa-comments mr-1"></i> Open Chat
 																</button>
 															<?php else: ?>
@@ -176,6 +176,9 @@ $conn->close();
                                                 Press Enter to send, Shift+Enter for new line
                                             </small>
                                         </div>
+                                        <div id="chatReadOnlyNotice" class="alert alert-info mt-3 mb-0" style="display: none;">
+                                            <i class="fas fa-eye mr-2"></i>You're viewing this conversation as <?php echo ucfirst($_SESSION['user_role']); ?>. Conversations between customers and workers are read-only here.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -192,6 +195,11 @@ $conn->close();
 let currentChatSessionId = null;
 let currentServiceId = null;
 let chatPollingInterval = null;
+const currentUserRole = '<?php echo $_SESSION['user_role']; ?>';
+
+function hasAccess(roles) {
+    return roles.includes(currentUserRole);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     loadConversations();
@@ -232,32 +240,23 @@ function displayConversations(sessions) {
     
     let html = '';
     sessions.forEach(session => {
-        const unreadBadge = session.unread_count > 0 ? 
+        const unreadBadge = session.unread_count > 0 ?
             `<span class="badge badge-primary ml-2">${session.unread_count}</span>` : '';
-        
-        // Determine the other party name based on user role
-        let otherParty;
-        if (hasAccess(['customer'])) {
-            otherParty = session.worker_name || 'Worker';
-        } else if (hasAccess(['worker'])) {
-            otherParty = session.customer_name || 'Customer';
-        } else {
-            // Admin/manager view
-            otherParty = `${session.customer_name} ↔ ${session.worker_name}`;
-        }
-        
-        const lastMessagePreview = session.last_message ? 
-            session.last_message.substring(0, 50) + (session.last_message.length > 50 ? '...' : '') : 
+
+        const otherParty = getOtherPartyName(session);
+
+        const lastMessagePreview = session.last_message ?
+            session.last_message.substring(0, 50) + (session.last_message.length > 50 ? '...' : '') :
             'No messages yet';
-        
+
         html += `
-            <div class="conversation-item d-flex align-items-center p-3 border-bottom" 
-                 onclick="selectChatSession(${session.id}, '${otherParty}', ${session.service_id})"
+            <div class="conversation-item d-flex align-items-center p-3 border-bottom"
+                 data-session-id="${session.id}" data-service-id="${session.service_id}" data-other-party="${escapeHtml(otherParty)}"
                  style="cursor: pointer;">
                 <div class="flex-grow-1">
-                    <h6 class="mb-1">${otherParty}</h6>
-                    <small class="text-muted d-block">${session.service_type}</small>
-                    <small class="text-muted">${lastMessagePreview}</small>
+                    <h6 class="mb-1">${escapeHtml(otherParty)}</h6>
+                    <small class="text-muted d-block">${escapeHtml(session.service_type)}</small>
+                    <small class="text-muted">${escapeHtml(lastMessagePreview)}</small>
                     <br>
                     <small class="text-muted">${formatTime(session.last_message_time)}</small>
                 </div>
@@ -265,8 +264,27 @@ function displayConversations(sessions) {
             </div>
         `;
     });
-    
+
     container.innerHTML = html;
+
+    container.querySelectorAll('.conversation-item').forEach(item => {
+        item.addEventListener('click', function() {
+            selectChatSession(this, parseInt(this.dataset.sessionId, 10), this.dataset.otherParty, parseInt(this.dataset.serviceId, 10));
+        });
+        if (currentChatSessionId && parseInt(item.dataset.sessionId, 10) === currentChatSessionId) {
+            item.classList.add('active');
+        }
+    });
+}
+
+function getOtherPartyName(session) {
+    if (hasAccess(['customer'])) {
+        return session.worker_name || 'Worker';
+    } else if (hasAccess(['worker'])) {
+        return session.customer_name || 'Customer';
+    }
+    // Admin/manager view
+    return `${session.customer_name} ↔ ${session.worker_name}`;
 }
 
 function startChatSession(serviceId) {
@@ -282,7 +300,9 @@ function startChatSession(serviceId) {
                 loadConversations();
                 // Automatically open the new chat session
                 setTimeout(() => {
-                    selectChatSession(data.chat_session_id, '', serviceId);
+                    const newItem = document.querySelector(`.conversation-item[data-session-id="${data.chat_session_id}"]`);
+                    const otherParty = newItem ? newItem.dataset.otherParty : '';
+                    selectChatSession(newItem, data.chat_session_id, otherParty, serviceId);
                 }, 500);
             } else {
                 showAlert('Error: ' + data.message, 'error');
@@ -294,27 +314,33 @@ function startChatSession(serviceId) {
         });
 }
 
-function selectChatSession(chatSessionId, otherPartyName, serviceId) {
+function selectChatSession(element, chatSessionId, otherPartyName, serviceId) {
     currentChatSessionId = chatSessionId;
     currentServiceId = serviceId;
-    
+
     document.getElementById('selectedConversation').style.display = 'none';
     document.getElementById('activeChat').style.display = 'block';
     document.getElementById('chatWithUser').textContent = `Chat with ${otherPartyName}`;
     document.getElementById('chatServiceInfo').textContent = `Service ID: ${serviceId}`;
-    
+
+    // Admins/managers can monitor conversations but cannot send messages
+    const canSend = hasAccess(['customer', 'worker']);
+    document.querySelector('.chat-input').style.display = canSend ? 'block' : 'none';
+    document.getElementById('chatReadOnlyNotice').style.display = canSend ? 'none' : 'block';
+
     loadChatMessages(chatSessionId);
     startChatPolling(chatSessionId);
-    
-    // Highlight selected conversation
-    document.querySelectorAll('.conversation-item').forEach(item => {
+
+    // Highlight selected conversation/service
+    document.querySelectorAll('.conversation-item, .service-item').forEach(item => {
         item.classList.remove('active');
     });
-    document.querySelectorAll('.service-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    event.currentTarget.classList.add('active');
+
+    const target = element ? element.closest('.conversation-item, .service-item')
+                            : document.querySelector(`.conversation-item[data-session-id="${chatSessionId}"]`);
+    if (target) {
+        target.classList.add('active');
+    }
 }
 
 function loadChatMessages(chatSessionId) {

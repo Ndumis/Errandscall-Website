@@ -1,33 +1,60 @@
 <?php
-$page_title = "My Profile | ErrandsCall Portal";
 include('config/database.php');
 include('includes/auth-check.php');
-include('includes/header.php');
-include('includes/sidebar.php');
 
-// Get current user data
+// Determine which user's profile to display.
+// Admins/managers can view another user's profile via ?id=, everyone else sees their own.
+$viewing_user_id = $_SESSION['user_id'];
+$is_other_user = false;
+
+if (isset($_GET['id']) && hasAccess(['admin', 'manager'])) {
+    $requested_id = intval($_GET['id']);
+    if ($requested_id > 0 && $requested_id != $_SESSION['user_id']) {
+        $viewing_user_id = $requested_id;
+        $is_other_user = true;
+    }
+}
+
 $conn = getDBConnection();
-$user_id = $_SESSION['user_id'];
 
-$user_sql = "SELECT u.*, 
+$user_sql = "SELECT u.*,
              (SELECT COUNT(*) FROM vehicles WHERE user_id = u.id) as vehicle_count,
              (SELECT COUNT(*) FROM services WHERE user_id = u.id) as service_count
              FROM users u WHERE u.id = ?";
 $user_stmt = $conn->prepare($user_sql);
-$user_stmt->bind_param("i", $user_id);
+$user_stmt->bind_param("i", $viewing_user_id);
 $user_stmt->execute();
 $user_result = $user_stmt->get_result();
 $user_data = $user_result->fetch_assoc();
 $user_stmt->close();
 $conn->close();
+
+if (!$user_data) {
+    header('Location: users-management.php');
+    exit;
+}
+
+$page_title = $is_other_user
+    ? htmlspecialchars($user_data['fullname']) . "'s Profile | ErrandsCall Portal"
+    : "My Profile | ErrandsCall Portal";
+include('includes/header.php');
+include('includes/sidebar.php');
 ?>
 
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0 text-gradient">My Profile</h1>
+        <h1 class="h3 mb-0 text-gradient">
+            <?php echo $is_other_user ? htmlspecialchars($user_data['fullname']) . "'s Profile" : 'My Profile'; ?>
+        </h1>
+        <?php if ($is_other_user): ?>
+        <a href="users-management.php" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Users
+        </a>
+        <?php else: ?>
         <button class="btn btn-gradient" id="editProfileBtn">
             <i class="fas fa-edit mr-2"></i>Edit Profile
         </button>
+        <?php endif; ?>
     </div>
 
     <!-- Profile Statistics -->
@@ -125,7 +152,7 @@ $conn->close();
                     <h5 class="mb-0">Recent Activity</h5>
                 </div>
                 <div class="card-body">
-                    <div id="profileActivity">
+                    <div id="profileActivity" data-user-id="<?php echo $is_other_user ? $viewing_user_id : ''; ?>">
                         <div class="text-center py-4">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="sr-only">Loading...</span>
@@ -138,6 +165,7 @@ $conn->close();
 
         <!-- Account Actions & Quick Stats -->
         <div class="col-lg-4">
+            <?php if (!$is_other_user): ?>
             <!-- Profile Completion -->
             <div class="card mb-4">
                 <div class="card-header bg-gradient text-white">
@@ -175,18 +203,38 @@ $conn->close();
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
+                        <?php if (isAdmin() || isManager()): ?>
+                        <a href="vehicles-management.php?view=all" class="btn btn-outline-primary btn-block">
+                            <i class="fas fa-car mr-2"></i>All Vehicles
+                        </a>
+                        <a href="services-management.php?view=all" class="btn btn-outline-primary btn-block">
+                            <i class="fas fa-tasks mr-2"></i>All Services
+                        </a>
+                        <a href="users-management.php" class="btn btn-outline-primary btn-block">
+                            <i class="fas fa-users mr-2"></i>User Management
+                        </a>
+                        <?php elseif (isWorker()): ?>
+                        <a href="service-assignments.php" class="btn btn-outline-primary btn-block">
+                            <i class="fas fa-tasks mr-2"></i>Service Assignments
+                        </a>
+                        <a href="chat.php" class="btn btn-outline-primary btn-block">
+                            <i class="fas fa-comments mr-2"></i>Messages
+                        </a>
+                        <?php elseif (isCustomer()): ?>
                         <a href="vehicles-management.php" class="btn btn-outline-primary btn-block">
-                            <i class="fas fa-car mr-2"></i>Manage Vehicles
+                            <i class="fas fa-car mr-2"></i>My Vehicles
                         </a>
                         <a href="services-management.php" class="btn btn-outline-primary btn-block">
-                            <i class="fas fa-tasks mr-2"></i>View Services
+                            <i class="fas fa-tasks mr-2"></i>My Service Requests
                         </a>
+                        <?php endif; ?>
                         <button class="btn btn-outline-warning btn-block" id="changePasswordBtn">
                             <i class="fas fa-key mr-2"></i>Change Password
                         </button>
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
 
             <!-- Account Status -->
             <div class="card">
@@ -194,22 +242,50 @@ $conn->close();
                     <h5 class="mb-0">Account Status</h5>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-success">
+                    <?php if ($user_data['status'] === 'active'): ?>
+                    <div class="alert alert-success mb-0">
                         <i class="fas fa-check-circle mr-2"></i>
                         <strong>Active</strong>
-                        <p class="mb-0 small">Your account is in good standing.</p>
+                        <p class="mb-0 small"><?php echo $is_other_user ? 'This account is in good standing.' : 'Your account is in good standing.'; ?></p>
                     </div>
-                    <div class="d-grid gap-2">
+                    <?php else: ?>
+                    <div class="alert alert-danger mb-0">
+                        <i class="fas fa-user-slash mr-2"></i>
+                        <strong>Inactive</strong>
+                        <p class="mb-0 small">This account has been deactivated and cannot log in.</p>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ($is_other_user): ?>
+                        <?php if (isAdmin() && $user_data['role'] !== 'admin'): ?>
+                        <div class="d-grid gap-2 mt-3">
+                            <?php if ($user_data['status'] === 'active'): ?>
+                            <button type="button" class="btn btn-block btn-outline-danger" id="toggleStatusBtn"
+                                    data-user-id="<?php echo $user_data['id']; ?>" data-current-status="active">
+                                <i class="fas fa-user-slash mr-2"></i>Deactivate User
+                            </button>
+                            <?php else: ?>
+                            <button type="button" class="btn btn-block btn-outline-success" id="toggleStatusBtn"
+                                    data-user-id="<?php echo $user_data['id']; ?>" data-current-status="inactive">
+                                <i class="fas fa-user-check mr-2"></i>Activate User
+                            </button>
+                            <?php endif; ?>
+                        </div>
+                        <?php endif; ?>
+                    <?php elseif (!isAdmin()): ?>
+                    <div class="d-grid gap-2 mt-3">
                         <button class="btn btn-outline-danger btn-block" id="deactivateAccountBtn">
                             <i class="fas fa-user-slash mr-2"></i>Deactivate Account
                         </button>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<?php if (!$is_other_user): ?>
 <!-- Edit Profile Modal -->
 <div class="modal fade" id="editProfileModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -303,6 +379,7 @@ $conn->close();
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <?php include('includes/footer.php'); ?>
 

@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </a>
         </li>
         
-        <?php if (hasAccess(['admin', 'manager', 'worker', 'customer'])): ?>
+        <?php if (hasAccess(['admin', 'manager', 'customer'])): ?>
         <li>
             <a href="#vehiclesSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fas fa-car mr-2"></i>
@@ -76,9 +76,6 @@ if (session_status() === PHP_SESSION_NONE) {
                 <li>
                     <a href="users-management.php">All Users</a>
                 </li>
-                <li>
-                    <a href="user-reports.php">User Activity</a>
-                </li>
             </ul>
         </li>
         <?php endif; ?>
@@ -122,7 +119,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <?php endif; ?>
         
         <!-- Analytics & Reports -->
-        <?php if (hasAccess(['admin'])): ?>
+        <?php if (hasAccess(['admin', 'manager'])): ?>
         <li>
             <a href="#analyticsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fas fa-chart-bar mr-2"></i>
