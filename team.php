@@ -209,7 +209,7 @@
                     </div>
                     <div class="contact-item mb-2">
                       <i class="fas fa-envelope text-warning mr-2"></i>
-                      <a href="mailto:sthembisom@errandscall.co.za" class="text-dark">sthembisom@errandscall.co.za</a>
+                      <a href="mailto:sthembiso.miya@errandscall.co.za" class="text-dark">sthembiso.miya@errandscall.co.za</a>
                     </div>
                     <div class="contact-item">
                       <i class="fas fa-map-marker-alt text-warning mr-2"></i>
@@ -221,77 +221,190 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Support Team -->
-  <section class="py-5 bg-light">
-    <div class="container">
-      <div class="text-center mb-5" data-aos="fade-up">
-        <h2 class="text-gradient">Support Team</h2>
-        <p class="lead">Our dedicated support staff ready to assist you</p>
-      </div>
-
-      <div class="row">
-        <!-- Support Member 1 -->
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="card team-member-card text-center h-100 shadow-sm">
-            <div class="team-member-img">
-              <img src="images/team/support1.jpg" alt="Support Team Member" class="member-img">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title mb-1">Sarah Johnson</h5>
-              <p class="text-muted mb-2">Customer Support Manager</p>
-              <p class="small text-muted mb-3">
-                Leads our customer support team with 5+ years of experience in client services.
-              </p>
-              <div class="member-contact">
-                <a href="mailto:sarahj@errandscall.co.za" class="btn btn-outline-primary btn-sm">
-                  <i class="fas fa-envelope mr-1"></i> Contact
-                </a>
+        <!-- Member 3 - Jonathan -->
+        <div class="col-lg-6 mb-4" data-aos="fade-up">
+          <div class="card team-card h-100 shadow-sm">
+            <div class="row no-gutters h-100">
+              <div class="col-md-5">
+                <div class="team-image-container">
+                  <img src="images/team/jonathan.jpg" alt="Jonathan Shai" class="team-img">
+                  <div class="team-overlay">
+                    <div class="team-social">
+                      <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                      <a href="mailto:jonathan.shai@errandscall.co.za" class="social-link"><i class="fas fa-envelope"></i></a>
+                      <a href="tel:+27729638748" class="social-link"><i class="fas fa-phone"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body d-flex flex-column h-100">
+                  <div>
+                    <h5 class="card-title mb-1">Jonathan Shai</h5>
+                    <p class="text-gradient font-weight-bold mb-2">Business Direct - Limpopo/Mpumalanga</p>
+                    <p class="text-muted small mb-3">
+                      Jonathan leads business development across Limpopo and Mpumalanga, helping
+                      clients navigate vehicle licensing with fast, reliable and personalised service.
+                    </p>
+                  </div>
+                  <div class="team-contact mt-auto">
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-phone text-warning mr-2"></i>
+                      <a href="tel:+27729638748" class="text-dark">+27 72 963 8748</a>
+                    </div>
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-envelope text-warning mr-2"></i>
+                      <a href="mailto:jonathan.shai@errandscall.co.za" class="text-dark">jonathan.shai@errandscall.co.za</a>
+                    </div>
+                    <div class="contact-item">
+                      <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                      <span class="text-muted">Limpopo & Mpumalanga</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Support Member 2 -->
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="card team-member-card text-center h-100 shadow-sm">
-            <div class="team-member-img">
-              <img src="images/team/support2.jpg" alt="Support Team Member" class="member-img">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title mb-1">David Brown</h5>
-              <p class="text-muted mb-2">Licensing Specialist</p>
-              <p class="small text-muted mb-3">
-                Expert in vehicle registration and licensing procedures with 7+ years experience.
-              </p>
-              <div class="member-contact">
-                <a href="mailto:davidb@errandscall.co.za" class="btn btn-outline-primary btn-sm">
-                  <i class="fas fa-envelope mr-1"></i> Contact
-                </a>
+        <!-- Member 4 - Shay -->
+        <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card team-card h-100 shadow-sm">
+            <div class="row no-gutters h-100">
+              <div class="col-md-5">
+                <div class="team-image-container">
+                  <img src="images/team/shay.jpg" alt="Shay Mackay" class="team-img">
+                  <div class="team-overlay">
+                    <div class="team-social">
+                      <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                      <a href="mailto:shay@errandscall.co.za" class="social-link"><i class="fas fa-envelope"></i></a>
+                      <a href="tel:+27685229418" class="social-link"><i class="fas fa-phone"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body d-flex flex-column h-100">
+                  <div>
+                    <h5 class="card-title mb-1">Shay Mackay</h5>
+                    <p class="text-gradient font-weight-bold mb-2">Cape Town Director</p>
+                    <p class="text-muted small mb-3">
+                      As Cape Town Director, Shay leads our Western Cape operations, ensuring
+                      clients receive prompt, professional service across the region.
+                    </p>
+                  </div>
+                  <div class="team-contact mt-auto">
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-phone text-warning mr-2"></i>
+                      <a href="tel:+27685229418" class="text-dark">+27 68 522 9418</a>
+                    </div>
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-envelope text-warning mr-2"></i>
+                      <a href="mailto:shay@errandscall.co.za" class="text-dark">shay@errandscall.co.za</a>
+                    </div>
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-envelope text-warning mr-2"></i>
+                      <a href="mailto:cpt_info@errandscall.co.za" class="text-dark">cpt_info@errandscall.co.za</a>
+                    </div>
+                    <div class="contact-item">
+                      <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                      <span class="text-muted">Cape Town & Western Cape</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Support Member 3 -->
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="card team-member-card text-center h-100 shadow-sm">
-            <div class="team-member-img">
-              <img src="images/team/support3.jpg" alt="Support Team Member" class="member-img">
+        <!-- Member 5 - Lonwabo -->
+        <div class="col-lg-6 mb-4" data-aos="fade-up">
+          <div class="card team-card h-100 shadow-sm">
+            <div class="row no-gutters h-100">
+              <div class="col-md-5">
+                <div class="team-image-container">
+                  <img src="images/team/lonwabo.jpg" alt="Lonwabo Mzolisi Maqokolo" class="team-img">
+                  <div class="team-overlay">
+                    <div class="team-social">
+                      <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                      <a href="mailto:lonwabo@errandscall.co.za" class="social-link"><i class="fas fa-envelope"></i></a>
+                      <a href="tel:+27603541146" class="social-link"><i class="fas fa-phone"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body d-flex flex-column h-100">
+                  <div>
+                    <h5 class="card-title mb-1">Lonwabo Mzolisi Maqokolo</h5>
+                    <p class="text-gradient font-weight-bold mb-2">Eastern Cape Executive</p>
+                    <p class="text-muted small mb-3">
+                      Lonwabo drives ErrandsCall's presence in the Eastern Cape, bringing
+                      convenient and reliable vehicle licensing solutions closer to clients in the region.
+                    </p>
+                  </div>
+                  <div class="team-contact mt-auto">
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-phone text-warning mr-2"></i>
+                      <a href="tel:+27603541146" class="text-dark">+27 60 354 1146</a>
+                    </div>
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-envelope text-warning mr-2"></i>
+                      <a href="mailto:lonwabo@errandscall.co.za" class="text-dark">lonwabo@errandscall.co.za</a>
+                    </div>
+                    <div class="contact-item">
+                      <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                      <span class="text-muted">Eastern Cape Region</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title mb-1">Lisa Williams</h5>
-              <p class="text-muted mb-2">Documentation Expert</p>
-              <p class="small text-muted mb-3">
-                Specializes in document processing and compliance requirements.
-              </p>
-              <div class="member-contact">
-                <a href="mailto:lisaw@errandscall.co.za" class="btn btn-outline-primary btn-sm">
-                  <i class="fas fa-envelope mr-1"></i> Contact
-                </a>
+          </div>
+        </div>
+
+        <!-- Member 6 - Sphamandla -->
+        <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card team-card h-100 shadow-sm">
+            <div class="row no-gutters h-100">
+              <div class="col-md-5">
+                <div class="team-image-container">
+                  <img src="images/team/sphamandla.jpg" alt="Sphamandla Mlaba" class="team-img">
+                  <div class="team-overlay">
+                    <div class="team-social">
+                      <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                      <a href="mailto:sphamandla@errandscall.co.za" class="social-link"><i class="fas fa-envelope"></i></a>
+                      <a href="tel:+27672820324" class="social-link"><i class="fas fa-phone"></i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body d-flex flex-column h-100">
+                  <div>
+                    <h5 class="card-title mb-1">Sphamandla Mlaba</h5>
+                    <p class="text-gradient font-weight-bold mb-2">Head of Operations</p>
+                    <p class="text-muted small mb-3">
+                      As Head of Operations, Sphamandla oversees day-to-day service delivery
+                      across all regions, ensuring consistency, quality and efficiency in everything we do.
+                    </p>
+                  </div>
+                  <div class="team-contact mt-auto">
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-phone text-warning mr-2"></i>
+                      <a href="tel:+27672820324" class="text-dark">+27 67 282 0324</a>
+                    </div>
+                    <div class="contact-item mb-2">
+                      <i class="fas fa-envelope text-warning mr-2"></i>
+                      <a href="mailto:sphamandla@errandscall.co.za" class="text-dark">sphamandla@errandscall.co.za</a>
+                    </div>
+                    <div class="contact-item">
+                      <i class="fas fa-map-marker-alt text-warning mr-2"></i>
+                      <span class="text-muted">All Regions</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

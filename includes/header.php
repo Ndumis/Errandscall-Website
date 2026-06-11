@@ -14,9 +14,10 @@
   "email": "info@errandscall.co.za",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "123 Licensing Street",
-    "addressLocality": "Cape Town",
-    "postalCode": "8001",
+    "streetAddress": "1 Chadwick Avenue, Cnr Andries Street, Wynberg",
+    "addressLocality": "Sandton",
+    "addressRegion": "Gauteng",
+    "postalCode": "2090",
     "addressCountry": "ZA"
   },
   "areaServed": [
@@ -62,9 +63,10 @@
       </div>
     </div>
   </div>
+</header>
 
-  <!-- Navigation - Now Sticky -->
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top nav-gradient" style="position: sticky; top: 0; z-index: 1030;">
+<!-- Navigation - Now Sticky -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top nav-gradient" style="position: sticky; top: 0; z-index: 1030;">
     <div class="container">
       <a class="navbar-brand" href="index.php">
         <img src="images/logo.png" alt="ErrandsCall Logo" style="max-height:50px;">
@@ -86,5 +88,4 @@
         </ul>
       </div>
     </div>
-  </nav>
-</header>
+</nav>

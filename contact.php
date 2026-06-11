@@ -148,7 +148,7 @@
               <div class="contact-details">
                 <div class="address mb-3">
                   <p class="mb-1"><strong>Main Office</strong></p>
-                  <p class="small text-muted mb-2">123 Licensing Street<br>Cape Town, 8001</p>
+                  <p class="small text-muted mb-2">1 Chadwick Avenue, Cnr Andries Street<br>Wynberg, Sandton, 2090</p>
                 </div>
                 <a href="#locations" class="btn btn-primary btn-block">
                   <i class="fas fa-directions mr-2"></i>Get Directions
@@ -293,7 +293,7 @@
                   <i class="fas fa-map-marker-alt text-warning mt-1 mr-3"></i>
                   <div>
                     <h6 class="mb-1">Office Location</h6>
-                    <p class="mb-0">123 Licensing Street<br>Cape Town, 8001<br>South Africa</p>
+                    <p class="mb-0">1 Chadwick Avenue, Cnr Andries Street<br>Wynberg, Sandton, 2090<br>South Africa</p>
                   </div>
                 </div>
               </div>
@@ -307,8 +307,8 @@
             </div>
             <div class="card-body p-0">
               <div class="map-container" style="height: 250px; border-radius: 0 0 8px 8px; overflow: hidden;">
-                <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13246.833333333334!2d18.4241!3d-33.9249!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcc67585c7c0c2f%3A0x2e0c2b7b0c0c0c0c!2sCape%20Town%20City%20Centre%2C%20Cape%20Town%2C%208000!5e0!3m2!1sen!2sza!4v1695825901234!5m2!1sen!2sza" 
+                <iframe
+                  src="https://www.google.com/maps?q=1+Chadwick+Avenue,+Cnr+Andries+Street,+Wynberg,+Sandton,+2090&output=embed"
                   width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
             </div>

@@ -219,69 +219,6 @@
     </div>
   </section>
 
-  <!-- Testimonials -->
-  <section class="py-5" data-aos="fade-up">
-    <div class="container">
-      <h2 class="text-center mb-5">What Our Clients Say</h2>
-      <div class="row">
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="card testimonial-card h-100">
-            <div class="card-body text-center">
-              <div class="testimonial-rating mb-3">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-              </div>
-              <p class="testimonial-text">"ErrandsCall saved me so much time and hassle. My license disc was renewed in record time!"</p>
-              <div class="testimonial-author">
-                <strong>John D.</strong>
-                <p class="text-muted small">Pretoria</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="card testimonial-card h-100">
-            <div class="card-body text-center">
-              <div class="testimonial-rating mb-3">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-              </div>
-              <p class="testimonial-text">"The change of ownership service was seamless. Highly recommended for anyone buying or selling a vehicle."</p>
-              <div class="testimonial-author">
-                <strong>Sarah M.</strong>
-                <p class="text-muted small">Johannesburg</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="card testimonial-card h-100">
-            <div class="card-body text-center">
-              <div class="testimonial-rating mb-3">
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-                <i class="fas fa-star text-warning"></i>
-              </div>
-              <p class="testimonial-text">"Outstanding service! They handled all my fine payments and kept me updated throughout the process."</p>
-              <div class="testimonial-author">
-                <strong>Michael T.</strong>
-                <p class="text-muted small">Cape Town</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- CTA Banner -->
   <section class="cta-banner text-center text-white py-5" data-aos="fade-up">
     <div class="container">
