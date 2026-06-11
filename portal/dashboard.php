@@ -318,6 +318,3 @@ if (hasAccess(['admin', 'manager'])) {
 <?php include('includes/footer.php'); ?>
 
 <script src="js/dashboard.js"></script>
-<?php if (isWorker()): ?>
-<script src="js/worker-location-tracker.js"></script>
-<?php endif; ?>

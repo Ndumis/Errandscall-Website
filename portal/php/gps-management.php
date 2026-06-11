@@ -53,12 +53,12 @@ function handleGetRequest($conn, $user_id) {
             LIMIT 100
         ");
         $stmt->bind_param("ii", $worker_id, $hours);
-    } else if (hasAccess(['worker'])) {
-        // Get own location history
+    } else if (hasAccess(['worker', 'manager'])) {
+        // Get own current location
         $stmt = $conn->prepare("
-            SELECT * FROM worker_locations 
+            SELECT * FROM worker_locations
             WHERE worker_id = ? AND timestamp >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
-            ORDER BY timestamp DESC 
+            ORDER BY timestamp DESC
             LIMIT 100
         ");
         $stmt->bind_param("i", $user_id);
@@ -98,30 +98,31 @@ function handlePostRequest($conn, $user_id) {
     $app_version = isset($_POST['app_version']) ? $_POST['app_version'] : null;
     $device_type = isset($_POST['device_type']) ? $_POST['device_type'] : null;
     
-    // Insert location data
+    // Upsert current location (one row per worker - keeps the table tiny)
     $stmt = $conn->prepare("
-        INSERT INTO worker_locations 
-        (worker_id, latitude, longitude, accuracy, speed, heading, altitude, battery_level, is_moving) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO worker_locations
+        (worker_id, latitude, longitude, accuracy, speed, heading, altitude, battery_level, is_moving, timestamp)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+        AS new
+        ON DUPLICATE KEY UPDATE
+            latitude = new.latitude,
+            longitude = new.longitude,
+            accuracy = new.accuracy,
+            speed = new.speed,
+            heading = new.heading,
+            altitude = new.altitude,
+            battery_level = new.battery_level,
+            is_moving = new.is_moving,
+            timestamp = new.timestamp
     ");
     $stmt->bind_param("iddddddii", $user_id, $latitude, $longitude, $accuracy, $speed, $heading, $altitude, $battery_level, $is_moving);
-    
+
     if ($stmt->execute()) {
         // Update online status
         updateOnlineStatus($conn, $user_id, true, $app_version, $device_type);
-        
-        // Archive to history (keep lightweight history)
-        $history_stmt = $conn->prepare("
-            INSERT INTO worker_location_history (worker_id, latitude, longitude)
-            VALUES (?, ?, ?)
-        ");
-        $history_stmt->bind_param("idd", $user_id, $latitude, $longitude);
-        $history_stmt->execute();
-        $history_stmt->close();
-        
+
         $response['success'] = true;
         $response['message'] = 'Location updated';
-        $response['location_id'] = $conn->insert_id;
     } else {
         $response['message'] = 'Error updating location';
     }

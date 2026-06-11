@@ -35,7 +35,15 @@ if (session_status() === PHP_SESSION_NONE) {
           <span class="ml-2">Portal</span>
         </a>
         
-        <div class="navbar-nav ml-auto">
+        <div class="navbar-nav ml-auto align-items-center">
+          <?php if (in_array($_SESSION['user_role'], ['worker', 'manager'])): ?>
+          <!-- Live Location Status -->
+          <div class="nav-item mr-3">
+            <span id="locationStatusIndicator" class="badge badge-secondary" title="Live location sharing status">
+              <i class="fas fa-map-marker-alt mr-1"></i>Location: Off
+            </span>
+          </div>
+          <?php endif; ?>
           <!-- Notifications -->
           <div class="nav-item dropdown mr-3">
             <a class="nav-link dropdown-toggle text-white" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown">

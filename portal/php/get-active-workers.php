@@ -23,6 +23,8 @@ try {
             wl.latitude,
             wl.longitude,
             wl.timestamp as location_timestamp,
+            wl.battery_level,
+            wl.is_moving,
             s.id as service_id,
             s.service_type,
             s.status as service_status
@@ -30,7 +32,7 @@ try {
         LEFT JOIN worker_online_status wos ON u.id = wos.worker_id
         LEFT JOIN worker_locations wl ON u.id = wl.worker_id
         LEFT JOIN services s ON u.id = s.assigned_to AND s.status IN ('assigned', 'in_progress')
-        WHERE u.role = 'worker'
+        WHERE u.role IN ('worker', 'manager')
         AND u.status = 'active'
         ORDER BY wos.is_online DESC, wl.timestamp DESC
     ";
@@ -63,8 +65,8 @@ try {
                     'latitude' => (float)$row['latitude'],
                     'longitude' => (float)$row['longitude'],
                     'timestamp' => $row['location_timestamp'],
-					'battery_level' => $row['battery_level'],
-					'is_moving' => (bool)$row['is_moving']
+                    'battery_level' => $row['battery_level'] !== null ? (int)$row['battery_level'] : null,
+                    'is_moving' => (bool)$row['is_moving']
                 ];
             }
             
@@ -103,10 +105,16 @@ try {
     foreach ($workers as &$worker) {
         $worker['assigned_services'] = $service_counts[$worker['id']] ?? 0;
     }
-    
+    unset($worker);
+
+    $online_count = count(array_filter($workers, function($worker) {
+        return $worker['is_online'];
+    }));
+
     echo json_encode([
         'success' => true,
-        'workers' => $workers
+        'workers' => $workers,
+        'online_count' => $online_count
     ]);
     
 } catch (Exception $e) {

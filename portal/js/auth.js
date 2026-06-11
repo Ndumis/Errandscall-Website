@@ -150,6 +150,7 @@ $(document).ready(function () {
     }
 
     function validateIdNumber() {
+        if (!$idNumber.length) return;
         if (isForeignNational()) {
             $idNumber[0].setCustomValidity('');
             return;
@@ -178,6 +179,7 @@ $(document).ready(function () {
     }
 
     function tryAutofillDob() {
+        if (!$idNumber.length) return;
         if (isForeignNational()) return;
         const idNumber = $idNumber.val().trim();
         if (!/^\d{13}$/.test(idNumber)) return;

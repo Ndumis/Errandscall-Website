@@ -58,20 +58,32 @@ if (!hasAccess(['admin', 'manager'])) {
                         <!-- Legend -->
                         <div class="row mt-3">
                             <div class="col-12">
-                                <div class="d-flex justify-content-center">
-                                    <div class="legend-item mr-3">
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <div class="legend-item mr-3 mb-2">
                                         <span class="legend-color online-marker"></span>
-                                        <small class="text-muted">Online Worker</small>
+                                        <small class="text-muted">Online</small>
                                     </div>
-                                    <div class="legend-item mr-3">
+                                    <div class="legend-item mr-3 mb-2">
                                         <span class="legend-color offline-marker"></span>
-                                        <small class="text-muted">Offline Worker</small>
+                                        <small class="text-muted">Offline</small>
                                     </div>
-                                    <div class="legend-item">
+                                    <div class="legend-item mr-3 mb-2">
                                         <span class="legend-color selected-marker"></span>
-                                        <small class="text-muted">Selected Worker</small>
+                                        <small class="text-muted">Selected</small>
+                                    </div>
+                                    <div class="legend-item mr-3 mb-2">
+                                        <span class="legend-shape worker-shape"><i class="fas fa-user"></i></span>
+                                        <small class="text-muted">Worker</small>
+                                    </div>
+                                    <div class="legend-item mb-2">
+                                        <span class="legend-shape manager-shape"><i class="fas fa-user-tie"></i></span>
+                                        <small class="text-muted">Manager</small>
                                     </div>
                                 </div>
+                                <p class="text-center text-muted small mb-0">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Map refreshes automatically every 30 seconds. Workers and managers must enable location sharing for their position to appear here.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -138,6 +150,11 @@ if (!hasAccess(['admin', 'manager'])) {
     color: #2196f3;
 }
 
+/* Manager markers are square so they're distinguishable from worker (circle) markers */
+.worker-marker.role-manager {
+    border-radius: 6px;
+}
+
 .marker-content {
     font-size: 12px;
 }
@@ -170,6 +187,35 @@ if (!hasAccess(['admin', 'manager'])) {
     background: white;
     border-color: #2196f3;
     animation: pulse 2s infinite;
+}
+
+/* Legend marker shapes (mirrors map marker icons) */
+.legend-shape {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    border: 2px solid var(--gray-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--gray-medium);
+    background: white;
+}
+
+.legend-shape.worker-shape {
+    border-radius: 50%;
+}
+
+.legend-shape.manager-shape {
+    border-radius: 4px;
+}
+
+/* Role badges in the workers list */
+.role-badge-worker,
+.role-badge-manager {
+    background: var(--primary-gradient-muted);
+    color: #fff;
 }
 
 @keyframes pulse {

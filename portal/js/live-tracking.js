@@ -75,17 +75,26 @@ function displayWorkersList() {
         const statusClass = worker.is_online ? 'worker-online' : 'worker-offline';
         const statusText = worker.is_online ? 'Online' : 'Offline';
         const isSelected = selectedWorkerId === worker.id ? 'selected-worker' : '';
-        const batteryLevel = worker.last_location?.battery_level ? 
+        const batteryLevel = worker.last_location?.battery_level ?
             `<small class="text-muted d-block">Battery: ${worker.last_location.battery_level}%</small>` : '';
-        
+        const isManager = worker.role === 'manager';
+        const roleBadge = `<span class="badge role-badge-${isManager ? 'manager' : 'worker'}">
+                <i class="fas fa-${isManager ? 'user-tie' : 'user'} mr-1"></i>${isManager ? 'Manager' : 'Worker'}
+            </span>`;
+        const movingBadge = (worker.is_online && worker.last_location)
+            ? `<span class="badge badge-${worker.last_location.is_moving ? 'info' : 'light'} ml-1">
+                    <i class="fas fa-${worker.last_location.is_moving ? 'route' : 'building'} mr-1"></i>${worker.last_location.is_moving ? 'On the road' : 'Stationary'}
+               </span>`
+            : '';
+
         html += `
-            <div class="worker-item p-3 border-bottom ${isSelected}" 
-                 onclick="focusOnWorker(${worker.id})" 
+            <div class="worker-item p-3 border-bottom ${isSelected}"
+                 onclick="focusOnWorker(${worker.id})"
                  style="cursor: pointer; transition: all 0.3s ease;">
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="flex-grow-1">
                         <h6 class="mb-1">${worker.fullname}</h6>
-                        <small class="text-muted d-block">${worker.role}</small>
+                        <div class="mb-1">${roleBadge}${movingBadge}</div>
                         <small class="text-muted">${lastSeen}</small>
                         ${batteryLevel}
                     </div>
@@ -128,29 +137,32 @@ function updateMapMarkers() {
             bounds.push(latLng);
             
             const marker = L.marker(latLng).addTo(map);
-            
-            // Custom icon based on online status
+
+            // Custom icon based on role and online status
+            const isManager = worker.role === 'manager';
+            const roleClass = isManager ? 'role-manager' : 'role-worker';
+            const markerIcon = isManager ? 'user-tie' : (worker.is_online ? 'user' : 'user-clock');
             const icon = L.divIcon({
-                className: `worker-marker ${worker.is_online ? 'online' : 'offline'} ${selectedWorkerId === worker.id ? 'highlighted' : ''}`,
+                className: `worker-marker ${roleClass} ${worker.is_online ? 'online' : 'offline'} ${selectedWorkerId === worker.id ? 'highlighted' : ''}`,
                 html: `
                     <div class="marker-content">
-                        <i class="fas fa-${worker.is_online ? 'user' : 'user-clock'}"></i>
+                        <i class="fas fa-${markerIcon}"></i>
                     </div>
                 `,
                 iconSize: [30, 30],
                 iconAnchor: [15, 15]
             });
-            
+
             marker.setIcon(icon);
-            
+
             const popupContent = `
                 <div class="worker-popup">
                     <h6>${worker.fullname}</h6>
-                    <p class="mb-1"><strong>Role:</strong> ${worker.role}</p>
+                    <p class="mb-1"><strong>Role:</strong> ${isManager ? 'Manager' : 'Worker'}</p>
                     <p class="mb-1"><strong>Status:</strong> ${worker.is_online ? 'Online' : 'Offline'}</p>
                     <p class="mb-1"><strong>Last Update:</strong> ${formatTime(worker.last_location.timestamp)}</p>
                     ${worker.last_location.battery_level ? `<p class="mb-1"><strong>Battery:</strong> ${worker.last_location.battery_level}%</p>` : ''}
-                    ${worker.last_location.is_moving ? `<p class="mb-1"><strong>Status:</strong> Moving</p>` : ''}
+                    <p class="mb-1"><strong>Activity:</strong> ${worker.last_location.is_moving ? 'On the road' : 'Stationary (likely in office)'}</p>
                     ${worker.current_service ? `
                     <p class="mb-1"><strong>Current Service:</strong> ${worker.current_service.service_type}</p>
                     ` : ''}
