@@ -1,10 +1,9 @@
 <?php
-// Start session only if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once('../includes/session-config.php');
+startSecureSession();
 header('Content-Type: application/json');
 include('../config/database.php');
+include('../includes/upload-validator.php');
 
 $response = ['success' => false, 'message' => ''];
 
@@ -84,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if (strlen($password) < 6) {
-        $response['message'] = 'Password must be at least 6 characters long.';
+    if (strlen($password) < 8 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+        $response['message'] = 'Password must be at least 8 characters long and contain both letters and numbers.';
         echo json_encode($response);
         exit;
     }
@@ -110,17 +109,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $allowed_ext = ['pdf', 'jpg', 'jpeg', 'png'];
+    $allowed_mime_types = ['application/pdf', 'image/jpeg', 'image/png'];
     $max_size = 5 * 1024 * 1024; // 5MB
     $file_ext = strtolower(pathinfo($_FILES['id_document']['name'], PATHINFO_EXTENSION));
 
-    if (!in_array($file_ext, $allowed_ext)) {
-        $response['message'] = 'ID document must be a PDF, JPG or PNG file.';
-        echo json_encode($response);
-        exit;
-    }
-
-    if ($_FILES['id_document']['size'] > $max_size) {
-        $response['message'] = 'ID document must not exceed 5MB.';
+    $validation_error = validateUploadedFile($_FILES['id_document'], $allowed_ext, $allowed_mime_types, $max_size);
+    if ($validation_error) {
+        $response['message'] = $validation_error;
         echo json_encode($response);
         exit;
     }

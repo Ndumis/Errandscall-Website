@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    console.log('Vehicle management script loaded');
-
     // Form submission flags to prevent duplicates
     let isSubmitting = false;
 

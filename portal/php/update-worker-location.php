@@ -61,7 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['message'] = 'Location updated successfully';
         $response['location_id'] = $conn->insert_id;
     } else {
-        $response['message'] = 'Error updating location: ' . $conn->error;
+        error_log('Error updating location: ' . $conn->error);
+        $response['message'] = 'Error updating location. Please try again.';
     }
     
     $stmt->close();

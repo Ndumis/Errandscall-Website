@@ -17,7 +17,6 @@ function loadRecentActivity() {
         type: 'GET',
         dataType: 'json',
         success: function(response) {
-            console.log('Activity Response:', response); // Debug log
             if (response.success && response.activities) {
                 let html = '';
                 if (response.activities.length > 0) {

@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 include('../config/database.php');
 include('../includes/auth-check.php');
-session_start();
 
 $response = ['success' => false, 'message' => ''];
 
@@ -69,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['success'] = true;
         $response['message'] = 'Vehicle deleted successfully!';
     } else {
-        $response['message'] = 'Error deleting vehicle: ' . $conn->error;
+        error_log('Error deleting vehicle: ' . $conn->error);
+        $response['message'] = 'Error deleting vehicle. Please try again.';
     }
     
     $delete_stmt->close();

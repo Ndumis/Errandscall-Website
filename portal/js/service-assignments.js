@@ -108,8 +108,6 @@ function pickupService(serviceId) {
     if (!confirm('Are you sure you want to pick up this service?')) {
         return;
     }
-	
-	console.log(serviceId)
 
     $.ajax({
         url: 'php/pickup-service.php',

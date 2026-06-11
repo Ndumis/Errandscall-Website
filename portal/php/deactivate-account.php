@@ -30,13 +30,15 @@ try {
         $response['success'] = true;
         $response['message'] = 'Account deactivated successfully';
     } else {
-        $response['message'] = 'Error deactivating account: ' . $update_stmt->error;
+        error_log('Error deactivating account: ' . $update_stmt->error);
+        $response['message'] = 'Error deactivating account. Please try again.';
     }
-    
+
     $update_stmt->close();
-    
+
 } catch (Exception $e) {
-    $response['message'] = 'Error deactivating account: ' . $e->getMessage();
+    error_log('Error deactivating account: ' . $e->getMessage());
+    $response['message'] = 'Error deactivating account. Please try again.';
 }
 
 $conn->close();

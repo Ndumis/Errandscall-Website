@@ -1,8 +1,6 @@
 <?php
-// Check if session is already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/session-config.php';
+startSecureSession();
 
 // Session timeout configuration (30 minutes)
 $session_timeout = 1800; // 30 minutes in seconds

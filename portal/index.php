@@ -1,8 +1,6 @@
-<?php 
-// Start session only if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+<?php
+require_once('includes/session-config.php');
+startSecureSession();
 
 // Redirect to dashboard if already logged in
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
@@ -195,11 +193,11 @@ include('includes/header.php');
                         <div class="form-row">
                             <div class="form-group col-md-6 password-field">
                                 <label>Password *</label>
-                                <input type="password" class="form-control" id="registerPassword" name="password" required minlength="6">
+                                <input type="password" class="form-control" id="registerPassword" name="password" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$">
                                 <button type="button" class="password-toggle" data-target="registerPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                                <div class="invalid-feedback">Password must be at least 8 characters and contain both letters and numbers.</div>
                                 <div class="password-strength mt-2">
                                     <div class="password-strength-bar"></div>
                                 </div>
@@ -248,11 +246,11 @@ include('includes/header.php');
 
                             <div class="form-group password-field">
                                 <label>New Password *</label>
-                                <input type="password" class="form-control" id="otpNewPassword" name="password" required minlength="6">
+                                <input type="password" class="form-control" id="otpNewPassword" name="password" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$">
                                 <button type="button" class="password-toggle" data-target="otpNewPassword">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                                <div class="invalid-feedback">Password must be at least 8 characters and contain both letters and numbers.</div>
                                 <div class="password-strength mt-2">
                                     <div class="password-strength-bar"></div>
                                 </div>

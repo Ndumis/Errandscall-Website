@@ -59,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['success'] = true;
         $response['message'] = 'User updated successfully!';
     } else {
-        $response['message'] = 'Error updating user: ' . $conn->error;
+        error_log('Error updating user: ' . $conn->error);
+        $response['message'] = 'Error updating user. Please try again.';
     }
     
     $stmt->close();

@@ -90,7 +90,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['success'] = true;
         $response['message'] = 'Vehicle updated successfully!';
     } else {
-        $response['message'] = 'Error updating vehicle: ' . $conn->error;
+        error_log('Error updating vehicle: ' . $conn->error);
+        $response['message'] = 'Error updating vehicle. Please try again.';
     }
     
     $stmt->close();

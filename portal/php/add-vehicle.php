@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 include('../config/database.php');
 include('../includes/auth-check.php');
+include('../includes/upload-validator.php');
 
 $response = ['success' => false, 'message' => ''];
 
@@ -33,15 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Check for connection error
     if ($conn->connect_error) {
-        $response['message'] = 'Database connection failed: ' . $conn->connect_error;
+        error_log('Database connection failed: ' . $conn->connect_error);
+        $response['message'] = 'A database error occurred. Please try again later.';
         echo json_encode($response);
         exit;
     }
-    
+
     // Check if license plate already exists
     $check_stmt = $conn->prepare("SELECT id FROM vehicles WHERE license_plate = ?");
     if (!$check_stmt) {
-        $response['message'] = 'Prepare failed: ' . $conn->error;
+        error_log('Prepare failed: ' . $conn->error);
+        $response['message'] = 'A database error occurred. Please try again later.';
         $conn->close();
         echo json_encode($response);
         exit;
@@ -72,17 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filename = 'vehicle_' . time() . '_' . uniqid() . '.' . $file_extension;
         $target_path = $upload_dir . $filename;
         
-        // Validate file type
+        // Validate file type, content, and size
         $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-        if (!in_array(strtolower($file_extension), $allowed_types)) {
-            $response['message'] = 'Only JPG, JPEG, PNG, and GIF files are allowed.';
-            echo json_encode($response);
-            exit;
-        }
-        
-        // Validate file size (5MB)
-        if ($_FILES['vehicle_image']['size'] > 5 * 1024 * 1024) {
-            $response['message'] = 'File size must be less than 5MB.';
+        $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
+        $validation_error = validateUploadedFile($_FILES['vehicle_image'], $allowed_types, $allowed_mime_types, 5 * 1024 * 1024);
+        if ($validation_error) {
+            $response['message'] = $validation_error;
             echo json_encode($response);
             exit;
         }
@@ -99,7 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
-        $response['message'] = 'Prepare failed: ' . $conn->error;
+        error_log('Prepare failed: ' . $conn->error);
+        $response['message'] = 'A database error occurred. Please try again later.';
         $conn->close();
         echo json_encode($response);
         exit;
@@ -119,7 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log("Image uploaded but not stored in database: " . $image_filename);
         }
     } else {
-        $response['message'] = 'Error adding vehicle: ' . $stmt->error;
+        error_log('Error adding vehicle: ' . $stmt->error);
+        $response['message'] = 'Error adding vehicle. Please try again.';
     }
     
     $stmt->close();

@@ -1,0 +1,22 @@
+# Environment / local config
+.env
+cookies.txt
+
+# Generated reports / exports
+exports/*
+!exports/.gitkeep
+
+# Uploaded user content
+assets/uploads/*
+!assets/uploads/.gitkeep
+!assets/uploads/id_documents/.htaccess
+!assets/uploads/documents/.htaccess
+!assets/uploads/vehicle_images/.htaccess
+
+# Logs
+*.log
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/

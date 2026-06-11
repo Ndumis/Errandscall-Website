@@ -77,9 +77,9 @@ function loadProfileActivity() {
                         html += `
                             <div class="d-flex justify-content-between align-items-center mb-3 p-3 border rounded">
                                 <div>
-                                    <strong>${activity.action || 'Activity'}</strong>
+                                    <strong>${escapeHtml(activity.action || 'Activity')}</strong>
                                     <br>
-                                    <small class="text-muted">${activity.description || ''}</small>
+                                    <small class="text-muted">${escapeHtml(activity.description || '')}</small>
                                 </div>
                                 <small class="text-muted">${formatTime(activity.created_at)}</small>
                             </div>

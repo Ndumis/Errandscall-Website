@@ -13,6 +13,10 @@ if (!isset($_SESSION['user_id']) || !hasAccess(['admin', 'manager'])) {
 $conn = getDBConnection();
 $user_id = $_SESSION['user_id'];
 $period = $_GET['period'] ?? 'month'; // week, month, year
+$allowed_periods = ['day', 'week', 'month', 'year'];
+if (!in_array($period, $allowed_periods)) {
+    $period = 'month';
+}
 
 // Service analytics
 $services_stmt = $conn->prepare("

@@ -35,8 +35,8 @@ if ($new_password !== $confirm_password) {
     exit;
 }
 
-if (strlen($new_password) < 8) {
-    $response['message'] = 'Password must be at least 8 characters long';
+if (strlen($new_password) < 8 || !preg_match('/[A-Za-z]/', $new_password) || !preg_match('/[0-9]/', $new_password)) {
+    $response['message'] = 'Password must be at least 8 characters long and contain both letters and numbers';
     echo json_encode($response);
     exit;
 }
@@ -82,13 +82,15 @@ try {
         $response['success'] = true;
         $response['message'] = 'Password changed successfully';
     } else {
-        $response['message'] = 'Error changing password: ' . $update_stmt->error;
+        error_log('Error changing password: ' . $update_stmt->error);
+        $response['message'] = 'Error changing password. Please try again.';
     }
-    
+
     $update_stmt->close();
-    
+
 } catch (Exception $e) {
-    $response['message'] = 'Error changing password: ' . $e->getMessage();
+    error_log('Error changing password: ' . $e->getMessage());
+    $response['message'] = 'Error changing password. Please try again.';
 }
 
 $conn->close();

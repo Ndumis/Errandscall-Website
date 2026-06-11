@@ -162,6 +162,12 @@ document.addEventListener('DOMContentLoaded', function() {
     loadRatings();
     loadCompletedServices();
     initializeStarRating();
+
+    // Delegated handler for the Edit button (data-* attrs avoid building an
+    // onclick string with user-controlled values, which is XSS-prone)
+    $(document).on('click', '.edit-rating-btn', function() {
+        editRating($(this).data('id'), $(this).data('rating'), $(this).data('comment'));
+    });
 });
 
 function loadRatings() {
@@ -202,18 +208,18 @@ function displayRatings(ratings) {
         const stars = generateStars(rating.rating);
         html += `
             <tr>
-                <td>${rating.service_type}</td>
-                <td>${rating.worker_name || 'N/A'}</td>
+                <td>${escapeHtml(rating.service_type)}</td>
+                <td>${escapeHtml(rating.worker_name || 'N/A')}</td>
                 <td>
                     <div class="rating-stars">
                         ${stars}
                     </div>
                     <small class="text-muted">${rating.rating}/5</small>
                 </td>
-                <td>${rating.comment || '<span class="text-muted">No comment</span>'}</td>
+                <td>${rating.comment ? escapeHtml(rating.comment) : '<span class="text-muted">No comment</span>'}</td>
                 <td>${formatDate(rating.created_at)}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-primary" onclick="editRating(${rating.id}, ${rating.rating}, '${rating.comment || ''}')">
+                    <button class="btn btn-sm btn-outline-primary edit-rating-btn" data-id="${rating.id}" data-rating="${rating.rating}" data-comment="${escapeHtml(rating.comment || '')}">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-danger" onclick="deleteRating(${rating.id})">

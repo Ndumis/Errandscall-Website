@@ -1,4 +1,10 @@
 <?php
+// Production-safe error handling: never display raw errors to users,
+// but keep logging them so issues can still be diagnosed.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
+
 // Database configuration
 if (!defined('DB_HOST')) {
     define('DB_HOST', 'localhost');
@@ -20,7 +26,8 @@ if (!function_exists('getDBConnection')) {
         
         // Check connection
         if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            error_log("Database connection failed: " . $conn->connect_error);
+            die("A database error occurred. Please try again later.");
         }
         
         return $conn;
@@ -196,7 +203,8 @@ if (!function_exists('createTables')) {
 		
 		foreach ($tables as $sql) {
 			if (!$conn->query($sql)) {
-				die("Error creating table: " . $conn->error);
+				error_log("Error creating table: " . $conn->error);
+				die("A database error occurred while initializing the application.");
 			}
 		}
 

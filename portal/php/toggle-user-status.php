@@ -52,7 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['message'] = $status === 'active' ? 'User activated successfully!' : 'User deactivated successfully!';
         $response['status'] = $status;
     } else {
-        $response['message'] = 'Error updating user status: ' . $conn->error;
+        error_log('Error updating user status: ' . $conn->error);
+        $response['message'] = 'Error updating user status. Please try again.';
     }
 
     $stmt->close();

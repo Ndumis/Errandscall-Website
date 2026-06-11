@@ -43,7 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
             $response['message'] = 'Vehicle not found.';
         }
     } else {
-        $response['message'] = 'Error fetching vehicle: ' . $conn->error;
+        error_log('Error fetching vehicle: ' . $conn->error);
+        $response['message'] = 'Error fetching vehicle. Please try again.';
     }
     
     $stmt->close();

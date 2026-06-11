@@ -367,7 +367,7 @@ function displayMessages(messages) {
                 <div class="message-content p-3 rounded">
                     <div class="message-text">${escapeHtml(msg.message)}</div>
                     <div class="message-time text-muted small mt-1">
-                        ${msg.sender_name} • ${time}
+                        ${escapeHtml(msg.sender_name)} • ${time}
                         ${msg.is_own_message ? '<i class="fas fa-check ml-1 ' + (msg.is_read ? 'text-primary' : 'text-muted') + '"></i>' : ''}
                     </div>
                 </div>

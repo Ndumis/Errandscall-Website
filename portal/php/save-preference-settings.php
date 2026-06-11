@@ -59,13 +59,15 @@ try {
         $response['success'] = true;
         $response['message'] = 'Preferences saved successfully';
     } else {
-        $response['message'] = 'Error saving settings: ' . $stmt->error;
+        error_log('Error saving settings: ' . $stmt->error);
+        $response['message'] = 'Error saving settings. Please try again.';
     }
-    
+
     $stmt->close();
-    
+
 } catch (Exception $e) {
-    $response['message'] = 'Error saving settings: ' . $e->getMessage();
+    error_log('Error saving settings: ' . $e->getMessage());
+    $response['message'] = 'Error saving settings. Please try again.';
 }
 
 $conn->close();

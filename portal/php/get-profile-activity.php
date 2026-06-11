@@ -95,7 +95,8 @@ try {
     $response['success'] = true;
     
 } catch (Exception $e) {
-    $response['message'] = 'Error fetching activity: ' . $e->getMessage();
+    error_log('Error fetching activity: ' . $e->getMessage());
+    $response['message'] = 'Error fetching activity. Please try again.';
 }
 
 $conn->close();

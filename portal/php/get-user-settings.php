@@ -53,7 +53,8 @@ try {
     $response['success'] = true;
     
 } catch (Exception $e) {
-    $response['message'] = 'Error fetching settings: ' . $e->getMessage();
+    error_log('Error fetching settings: ' . $e->getMessage());
+    $response['message'] = 'Error fetching settings. Please try again.';
 }
 
 $conn->close();

@@ -359,9 +359,9 @@ include('includes/sidebar.php');
                     </div>
                     <div class="form-group">
                         <label for="newPassword">New Password *</label>
-                        <input type="password" class="form-control" id="newPassword" name="new_password" required>
+                        <input type="password" class="form-control" id="newPassword" name="new_password" required minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$">
                         <small class="form-text text-muted">
-                            Password must be at least 8 characters long and include uppercase, lowercase, and numbers.
+                            Password must be at least 8 characters long and contain both letters and numbers.
                         </small>
                     </div>
                     <div class="form-group">

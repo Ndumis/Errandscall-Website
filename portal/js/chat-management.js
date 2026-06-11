@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    console.log('Chat management script loaded');
-
     const rowsPerPage = 10;
     let currentPage = 1;
 

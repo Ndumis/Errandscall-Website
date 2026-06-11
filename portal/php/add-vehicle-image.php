@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 include('../config/database.php');
 include('../includes/auth-check.php');
+include('../includes/upload-validator.php');
 
 $response = ['success' => false, 'message' => ''];
 
@@ -53,17 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filename = 'vehicle_' . $vehicle_id . '_' . $image_side . '_' . time() . '.' . $file_extension;
         $target_path = $upload_dir . $filename;
         
-        // Validate file type
+        // Validate file type, content, and size
         $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-        if (!in_array(strtolower($file_extension), $allowed_types)) {
-            $response['message'] = 'Only JPG, JPEG, PNG, and GIF files are allowed.';
-            echo json_encode($response);
-            exit;
-        }
-        
-        // Validate file size (5MB)
-        if ($_FILES['vehicle_image']['size'] > 5 * 1024 * 1024) {
-            $response['message'] = 'File size must be less than 5MB.';
+        $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
+        $validation_error = validateUploadedFile($_FILES['vehicle_image'], $allowed_types, $allowed_mime_types, 5 * 1024 * 1024);
+        if ($validation_error) {
+            $response['message'] = $validation_error;
             echo json_encode($response);
             exit;
         }
@@ -89,7 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['success'] = true;
                     $response['message'] = 'Image updated successfully!';
                 } else {
-                    $response['message'] = 'Error updating image: ' . $conn->error;
+                    error_log('Error updating image: ' . $conn->error);
+                    $response['message'] = 'Error updating image. Please try again.';
                 }
                 $update_stmt->close();
             } else {
@@ -101,7 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['success'] = true;
                     $response['message'] = 'Image uploaded successfully!';
                 } else {
-                    $response['message'] = 'Error uploading image: ' . $conn->error;
+                    error_log('Error uploading image: ' . $conn->error);
+                    $response['message'] = 'Error uploading image. Please try again.';
                 }
                 $insert_stmt->close();
             }

@@ -1,8 +1,9 @@
 <?php
 header('Content-Type: application/json');
 require_once('../config/database.php');
+require_once('../includes/session-config.php');
 
-session_start();
+startSecureSession();
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'worker') {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;

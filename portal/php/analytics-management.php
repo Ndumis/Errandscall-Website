@@ -54,7 +54,8 @@ function handleGetRequest($conn) {
         $response['success'] = true;
         $response['data'] = $data;
     } catch (Exception $e) {
-        $response['message'] = 'Error generating report: ' . $e->getMessage();
+        error_log('Error generating report: ' . $e->getMessage());
+        $response['message'] = 'Error generating report. Please try again.';
     }
 }
 
@@ -408,7 +409,8 @@ function saveReport($conn) {
         $response['message'] = 'Report saved successfully';
         $response['report_id'] = $stmt->insert_id;
     } else {
-        $response['message'] = 'Error saving report: ' . $stmt->error;
+        error_log('Error saving report: ' . $stmt->error);
+        $response['message'] = 'Error saving report. Please try again.';
     }
     $stmt->close();
 }

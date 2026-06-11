@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    console.log('User management script loaded');
-
     // Form submission flag to prevent duplicates
     let isSubmitting = false;
 

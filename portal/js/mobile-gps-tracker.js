@@ -15,13 +15,11 @@ class GPSTracker {
         
         // Check if GPS tracking is allowed for this role
         if (!this.canTrackLocation()) {
-            console.log('GPS tracking not available for your role');
             return false;
         }
 
         // Request permissions
         if (!await this.requestPermissions()) {
-            console.log('Location permissions denied');
             return false;
         }
 
@@ -69,8 +67,6 @@ class GPSTracker {
 
         // Also track on visibility change (when app comes to foreground)
         document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
-        
-        console.log('GPS tracking started');
     }
 
     stopTracking() {
@@ -82,8 +78,6 @@ class GPSTracker {
         
         // Update online status to offline
         this.updateOnlineStatus(false);
-        
-        console.log('GPS tracking stopped');
     }
 
     handleVisibilityChange() {
@@ -180,7 +174,6 @@ class GPSTracker {
             const data = await response.json();
             
             if (data.success) {
-                console.log('Location updated successfully');
                 this.updateOnlineStatus(true);
             } else {
                 console.error('Failed to update location:', data.message);

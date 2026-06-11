@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    if (strlen($password) < 6) {
-        $response['message'] = 'Password must be at least 6 characters long.';
+    if (strlen($password) < 8 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+        $response['message'] = 'Password must be at least 8 characters long and contain both letters and numbers.';
         echo json_encode($response);
         exit;
     }

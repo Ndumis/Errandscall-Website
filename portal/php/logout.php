@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once('../includes/session-config.php');
+startSecureSession();
 
 // Log logout activity if user was logged in
 if (isset($_SESSION['user_id']) && isset($_SESSION['user_role'])) {

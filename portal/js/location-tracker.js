@@ -1,7 +1,7 @@
 // Live location sharing for workers and managers.
-// Coordinates are console.logged for reference; only the most recent
-// position is sent to the server (php/gps-management.php upserts a
-// single row per user) so the database stays small.
+// Only the most recent position is sent to the server
+// (php/gps-management.php upserts a single row per user) so the
+// database stays small.
 (function() {
     if (typeof currentUserRole === 'undefined' || !['worker', 'manager'].includes(currentUserRole)) {
         return;
@@ -57,8 +57,6 @@
     function handlePosition(position) {
         const { latitude, longitude, accuracy, altitude, heading, speed } = position.coords;
         const timestamp = new Date(position.timestamp).toISOString();
-
-        console.log('[ErrandsCall Location]', { lat: latitude, lng: longitude, accuracy, altitude, heading, speed, timestamp });
 
         setStatus('active');
 

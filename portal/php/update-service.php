@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 include('../config/database.php');
 include('../includes/auth-check.php');
-session_start();
+include('../includes/upload-validator.php');
 
 $response = ['success' => false, 'message' => ''];
 
@@ -68,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!$update_stmt->execute()) {
-        $response['message'] = 'Error updating service: ' . $conn->error;
+        error_log('Error updating service: ' . $conn->error);
+        $response['message'] = 'Error updating service. Please try again.';
         $update_stmt->close();
         $conn->close();
         echo json_encode($response);
@@ -89,19 +90,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mkdir($upload_dir, 0755, true);
         }
 
+        $allowed_types = ['pdf', 'png', 'jpg', 'jpeg'];
+        $allowed_mime_types = ['application/pdf', 'image/jpeg', 'image/png'];
+
         for ($i = 0; $i < count($_FILES['documents']['name']); $i++) {
             if ($_FILES['documents']['error'][$i] === UPLOAD_ERR_OK) {
-                $file_extension = pathinfo($_FILES['documents']['name'][$i], PATHINFO_EXTENSION);
-                $filename = 'doc_' . $service_id . '_' . time() . '_' . $i . '.' . $file_extension;
-                $target_path = $upload_dir . $filename;
+                $file = [
+                    'name' => $_FILES['documents']['name'][$i],
+                    'tmp_name' => $_FILES['documents']['tmp_name'][$i],
+                    'size' => $_FILES['documents']['size'][$i],
+                ];
 
-                $allowed_types = ['pdf', 'png', 'jpg', 'jpeg'];
-                if (in_array(strtolower($file_extension), $allowed_types) && 
-                    $_FILES['documents']['size'][$i] <= 10 * 1024 * 1024) {
-                    
+                if (!validateUploadedFile($file, $allowed_types, $allowed_mime_types, 10 * 1024 * 1024)) {
+                    $file_extension = pathinfo($_FILES['documents']['name'][$i], PATHINFO_EXTENSION);
+                    $filename = 'doc_' . $service_id . '_' . time() . '_' . $i . '.' . $file_extension;
+                    $target_path = $upload_dir . $filename;
+
                     if (move_uploaded_file($_FILES['documents']['tmp_name'][$i], $target_path)) {
+                        $web_path = 'assets/uploads/documents/' . $filename;
                         $doc_stmt = $conn->prepare("INSERT INTO service_documents (service_id, document_path, document_type, uploaded_by) VALUES (?, ?, 'worker_requested', ?)");
-                        $doc_stmt->bind_param("isi", $service_id, $target_path, $user_id);
+                        $doc_stmt->bind_param("isi", $service_id, $web_path, $user_id);
                         $doc_stmt->execute();
                         $doc_stmt->close();
                     }

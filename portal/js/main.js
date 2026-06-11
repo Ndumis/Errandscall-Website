@@ -1,3 +1,14 @@
+// Escape HTML special characters before inserting user-controlled text into
+// the DOM. Safe for both element text content and quoted attribute values.
+function escapeHtml(text) {
+    return String(text ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 // Add to your main.js or dashboard.js
 function checkForNewMessages() {
     fetch('php/get-unread-counts.php')

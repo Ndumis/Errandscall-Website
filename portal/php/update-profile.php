@@ -68,13 +68,15 @@ try {
         $response['success'] = true;
         $response['message'] = 'Profile updated successfully';
     } else {
-        $response['message'] = 'Error updating profile: ' . $update_stmt->error;
+        error_log('Error updating profile: ' . $update_stmt->error);
+        $response['message'] = 'Error updating profile. Please try again.';
     }
-    
+
     $update_stmt->close();
-    
+
 } catch (Exception $e) {
-    $response['message'] = 'Error updating profile: ' . $e->getMessage();
+    error_log('Error updating profile: ' . $e->getMessage());
+    $response['message'] = 'Error updating profile. Please try again.';
 }
 
 $conn->close();

@@ -327,7 +327,7 @@ function viewServiceDetails(serviceId) {
                     <div class="service-details">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <strong>Service Type:</strong> ${service.service_type || 'N/A'}
+                                <strong>Service Type:</strong> ${escapeHtml(service.service_type || 'N/A')}
                             </div>
                             <div class="col-md-6">
                                 <strong>Status:</strong> 
@@ -339,10 +339,10 @@ function viewServiceDetails(serviceId) {
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <strong>Vehicle:</strong> ${service.vehicle_info || 'N/A'}
+                                <strong>Vehicle:</strong> ${escapeHtml(service.vehicle_info || 'N/A')}
                             </div>
                             <div class="col-md-6">
-                                <strong>Customer:</strong> ${service.customer_name || 'N/A'}
+                                <strong>Customer:</strong> ${escapeHtml(service.customer_name || 'N/A')}
                             </div>
                         </div>
                         
@@ -350,7 +350,7 @@ function viewServiceDetails(serviceId) {
                         <div class="row mb-3">
                             <div class="col-12">
                                 <strong>Description:</strong>
-                                <p class="mt-1">${service.description}</p>
+                                <p class="mt-1">${escapeHtml(service.description)}</p>
                             </div>
                         </div>
                         ` : ''}
@@ -358,7 +358,7 @@ function viewServiceDetails(serviceId) {
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <strong>Assigned To:</strong> 
-                                ${service.assigned_to_name || 'Not assigned'}
+                                ${escapeHtml(service.assigned_to_name || 'Not assigned')}
                             </div>
                             <div class="col-md-6">
                                 <strong>Created:</strong> ${service.created_at ? new Date(service.created_at).toLocaleDateString() : 'N/A'}
@@ -378,9 +378,9 @@ function viewServiceDetails(serviceId) {
                     updates.forEach(update => {
                         html += `
                             <div class="update-item mb-3">
-                                <p class="mb-1">${update.update_text || 'No update text'}</p>
+                                <p class="mb-1">${escapeHtml(update.update_text || 'No update text')}</p>
                                 <small class="update-meta">
-                                    By ${update.user_name || 'Unknown'} • ${update.created_at ? new Date(update.created_at).toLocaleString() : 'Unknown date'}
+                                    By ${escapeHtml(update.user_name || 'Unknown')} • ${update.created_at ? new Date(update.created_at).toLocaleString() : 'Unknown date'}
                                 </small>
                             </div>
                         `;
@@ -406,8 +406,8 @@ function viewServiceDetails(serviceId) {
                         const fileName = doc.document_path ? doc.document_path.split('/').pop() : 'Unknown file';
                         html += `
                             <div class="document-item mb-2">
-                                <a href="${doc.document_path || '#'}" target="_blank" class="text-primary">
-                                    <i class="fas fa-file mr-2"></i>${fileName}
+                                <a href="${escapeHtml(doc.document_path || '#')}" target="_blank" class="text-primary">
+                                    <i class="fas fa-file mr-2"></i>${escapeHtml(fileName)}
                                 </a>
                                 <small class="text-muted ml-2">(${(doc.document_type || 'unknown').replace('_', ' ')})</small>
                             </div>
@@ -461,7 +461,7 @@ function loadVehiclesForSelect() {
             if (response.success) {
                 let html = '<option value="">Select Vehicle</option>';
                 response.vehicles.forEach(vehicle => {
-                    html += `<option value="${vehicle.id}">${vehicle.make} ${vehicle.model} - ${vehicle.license_plate}</option>`;
+                    html += `<option value="${vehicle.id}">${escapeHtml(vehicle.make)} ${escapeHtml(vehicle.model)} - ${escapeHtml(vehicle.license_plate)}</option>`;
                 });
                 $('#vehicleSelect').html(html);
             }

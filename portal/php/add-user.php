@@ -68,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['success'] = true;
         $response['message'] = 'User added successfully!';
     } else {
-        $response['message'] = 'Error adding user: ' . $conn->error;
+        error_log('Error adding user: ' . $conn->error);
+        $response['message'] = 'Error adding user. Please try again.';
     }
     
     $stmt->close();
