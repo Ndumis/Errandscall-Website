@@ -234,12 +234,43 @@ class AnalyticsManager {
                 end = new Date(today.getFullYear(), today.getMonth(), 0);
                 end.setHours(23, 59, 59, 999);
                 break;
+            case 'this_quarter': {
+                const quarter = Math.floor(today.getMonth() / 3);
+                start = new Date(today.getFullYear(), quarter * 3, 1);
+                end = new Date(today.getFullYear(), quarter * 3 + 3, 0);
+                end.setHours(23, 59, 59, 999);
+                break;
+            }
+            case 'last_quarter': {
+                const quarter = Math.floor(today.getMonth() / 3) - 1;
+                start = new Date(today.getFullYear(), quarter * 3, 1);
+                end = new Date(today.getFullYear(), quarter * 3 + 3, 0);
+                end.setHours(23, 59, 59, 999);
+                break;
+            }
+            case 'this_year':
+                start = new Date(today.getFullYear(), 0, 1);
+                end = new Date(today.getFullYear(), 11, 31);
+                end.setHours(23, 59, 59, 999);
+                break;
+            case 'last_year':
+                start = new Date(today.getFullYear() - 1, 0, 1);
+                end = new Date(today.getFullYear() - 1, 11, 31);
+                end.setHours(23, 59, 59, 999);
+                break;
         }
 
         return {
-            start: start.toISOString().split('T')[0],
-            end: end.toISOString().split('T')[0]
+            start: this.formatLocalDate(start),
+            end: this.formatLocalDate(end)
         };
+    }
+
+    formatLocalDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 
     updateServiceTypesChart(chartData) {

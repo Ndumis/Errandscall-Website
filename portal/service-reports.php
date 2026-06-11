@@ -13,11 +13,13 @@ if (!hasAccess(['admin', 'manager'])) {
 $conn = getDBConnection();
 
 // Get filter parameters
+$date_range = $_GET['date_range'] ?? 'this_month';
 $start_date = $_GET['start_date'] ?? date('Y-m-01');
 $end_date = $_GET['end_date'] ?? date('Y-m-t');
 $service_type = $_GET['service_type'] ?? '';
 $status = $_GET['status'] ?? '';
 $priority = $_GET['priority'] ?? '';
+$custom_date_style = $date_range === 'custom' ? '' : ' style="display: none;"';
 ?>
 
 <div class="main-content">
@@ -40,11 +42,29 @@ $priority = $_GET['priority'] ?? '';
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label for="dateRange">Date Range</label>
+                            <select class="form-control" id="dateRange" name="date_range">
+                                <option value="today" <?php echo $date_range == 'today' ? 'selected' : ''; ?>>Today</option>
+                                <option value="yesterday" <?php echo $date_range == 'yesterday' ? 'selected' : ''; ?>>Yesterday</option>
+                                <option value="this_week" <?php echo $date_range == 'this_week' ? 'selected' : ''; ?>>This Week</option>
+                                <option value="last_week" <?php echo $date_range == 'last_week' ? 'selected' : ''; ?>>Last Week</option>
+                                <option value="this_month" <?php echo $date_range == 'this_month' ? 'selected' : ''; ?>>This Month</option>
+                                <option value="last_month" <?php echo $date_range == 'last_month' ? 'selected' : ''; ?>>Last Month</option>
+                                <option value="this_quarter" <?php echo $date_range == 'this_quarter' ? 'selected' : ''; ?>>This Quarter</option>
+                                <option value="last_quarter" <?php echo $date_range == 'last_quarter' ? 'selected' : ''; ?>>Last Quarter</option>
+                                <option value="this_year" <?php echo $date_range == 'this_year' ? 'selected' : ''; ?>>This Year</option>
+                                <option value="last_year" <?php echo $date_range == 'last_year' ? 'selected' : ''; ?>>Last Year</option>
+                                <option value="custom" <?php echo $date_range == 'custom' ? 'selected' : ''; ?>>Custom Range</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 custom-date"<?php echo $custom_date_style; ?>>
+                        <div class="form-group">
                             <label for="startDate">Start Date</label>
                             <input type="date" class="form-control" id="startDate" name="start_date" value="<?php echo $start_date; ?>">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 custom-date"<?php echo $custom_date_style; ?>>
                         <div class="form-group">
                             <label for="endDate">End Date</label>
                             <input type="date" class="form-control" id="endDate" name="end_date" value="<?php echo $end_date; ?>">
@@ -193,10 +213,12 @@ $priority = $_GET['priority'] ?? '';
 <?php include('includes/footer.php'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/date-range-filter.js"></script>
 <script>
 // Initialize charts when page loads
 document.addEventListener('DOMContentLoaded', function() {
     initializeServiceCharts();
+    initDateRangeFilter('#serviceFilters');
 
     if ($('#serviceDetailsTable tbody tr').length > 0) {
         createPagination({

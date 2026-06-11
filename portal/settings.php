@@ -192,7 +192,13 @@ include('includes/sidebar.php');
                                         <label class="custom-control-label" for="marketingEmails">Marketing Communications</label>
                                     </div>
                                 </div>
-                                
+
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exportDataModal">
+                                        <i class="fas fa-download mr-2"></i>Export My Data
+                                    </button>
+                                </div>
+
                                 <h6 class="text-primary mb-3 mt-4">Security</h6>
                                 <div class="form-group">
                                     <div class="custom-control custom-switch">
@@ -305,14 +311,10 @@ include('includes/sidebar.php');
                         <input type="radio" id="exportCSV" name="exportFormat" value="csv" class="custom-control-input">
                         <label class="custom-control-label" for="exportCSV">CSV Format</label>
                     </div>
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="exportPDF" name="exportFormat" value="pdf" class="custom-control-input">
-                        <label class="custom-control-label" for="exportPDF">PDF Report</label>
-                    </div>
                 </div>
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle mr-2"></i>
-                    The export process may take a few minutes. You'll receive a download link via email.
+                    Your data will be downloaded to your device immediately.
                 </div>
             </div>
             <div class="modal-footer">

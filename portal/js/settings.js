@@ -89,11 +89,13 @@ function populateSettingsForm(settings) {
 
 function saveAccountSettings() {
     const formData = new FormData($('#accountSettingsForm')[0]);
-    
+
     $.ajax({
         url: 'php/save-account-settings.php',
         type: 'POST',
         data: formData,
+        processData: false,
+        contentType: false,
         dataType: 'json',
         success: function(response) {
             if (response.success) {
@@ -110,11 +112,13 @@ function saveAccountSettings() {
 
 function saveNotificationSettings() {
     const formData = new FormData($('#notificationSettingsForm')[0]);
-    
+
     $.ajax({
         url: 'php/save-notification-settings.php',
         type: 'POST',
         data: formData,
+        processData: false,
+        contentType: false,
         dataType: 'json',
         success: function(response) {
             if (response.success) {
@@ -131,11 +135,13 @@ function saveNotificationSettings() {
 
 function savePrivacySettings() {
     const formData = new FormData($('#privacySettingsForm')[0]);
-    
+
     $.ajax({
         url: 'php/save-privacy-settings.php',
         type: 'POST',
         data: formData,
+        processData: false,
+        contentType: false,
         dataType: 'json',
         success: function(response) {
             if (response.success) {
@@ -152,11 +158,13 @@ function savePrivacySettings() {
 
 function savePreferenceSettings() {
     const formData = new FormData($('#preferenceSettingsForm')[0]);
-    
+
     $.ajax({
         url: 'php/save-preference-settings.php',
         type: 'POST',
         data: formData,
+        processData: false,
+        contentType: false,
         dataType: 'json',
         success: function(response) {
             if (response.success) {
@@ -175,24 +183,9 @@ function savePreferenceSettings() {
 
 function exportData() {
     const format = $('input[name="exportFormat"]:checked').val();
-    
-    $.ajax({
-        url: 'php/export-user-data.php',
-        type: 'POST',
-        data: { format: format },
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                showAlert('Data export started! You will receive an email when it\'s ready.', 'success');
-                $('#exportDataModal').modal('hide');
-            } else {
-                showAlert(response.message || 'Error starting export', 'danger');
-            }
-        },
-        error: function() {
-            showAlert('An error occurred. Please try again.', 'danger');
-        }
-    });
+    window.open(`php/export-user-data.php?format=${format}`, '_blank');
+    $('#exportDataModal').modal('hide');
+    showAlert('Your data export has started downloading.', 'success');
 }
 
 function applyTheme(theme) {
