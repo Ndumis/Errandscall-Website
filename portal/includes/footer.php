@@ -55,6 +55,7 @@
   <script src="js/auth.js"></script>
   <script src="js/sidebar.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/pagination.js"></script>
   <?php if ($isTrackedRole): ?>
   <script>
     const currentUserRole = '<?php echo $_SESSION['user_role']; ?>';

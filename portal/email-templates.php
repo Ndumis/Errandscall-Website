@@ -38,6 +38,9 @@ if (!hasAccess(['admin', 'manager'])) {
                                 </tbody>
                             </table>
                         </div>
+                        <nav aria-label="Email templates pagination">
+                            <ul class="pagination justify-content-center mb-0 mt-3" id="templatesPagination"></ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -112,9 +115,11 @@ function loadTemplates() {
         .catch(error => console.error('Error:', error));
 }
 
+let templatesPager = null;
+
 function displayTemplates(templates) {
     const tbody = document.getElementById('templatesTableBody');
-    
+
     if (templates.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -127,9 +132,10 @@ function displayTemplates(templates) {
                 </td>
             </tr>
         `;
+        $('#templatesPagination').empty();
         return;
     }
-    
+
     let html = '';
     templates.forEach(template => {
         html += `
@@ -154,8 +160,17 @@ function displayTemplates(templates) {
             </tr>
         `;
     });
-    
+
     tbody.innerHTML = html;
+
+    if (!templatesPager) {
+        templatesPager = createPagination({
+            getItems: () => $('#templatesTableBody tr'),
+            paginationContainer: '#templatesPagination',
+            rowsPerPage: 10
+        });
+    }
+    templatesPager.refresh();
 }
 
 function showAddTemplateModal() {

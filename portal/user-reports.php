@@ -24,11 +24,8 @@ $activity_type = $_GET['activity_type'] ?? '';
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gradient">User Reports & Activities</h1>
         <div class="btn-group">
-            <button class="btn btn-outline-primary" onclick="exportUserReport('pdf')">
-                <i class="fas fa-file-pdf mr-2"></i>Export PDF
-            </button>
-            <button class="btn btn-outline-primary" onclick="exportUserReport('excel')">
-                <i class="fas fa-file-excel mr-2"></i>Export Excel
+            <button class="btn btn-outline-primary" onclick="exportUserReport()">
+                <i class="fas fa-file-csv mr-2"></i>Export CSV
             </button>
         </div>
     </div>
@@ -174,7 +171,7 @@ $activity_type = $_GET['activity_type'] ?? '';
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
+                        <table class="table table-striped table-hover" id="userActivitiesTable">
                             <thead>
                                 <tr>
                                     <th>User</th>
@@ -190,6 +187,9 @@ $activity_type = $_GET['activity_type'] ?? '';
                             </tbody>
                         </table>
                     </div>
+                    <nav aria-label="User activities pagination">
+                        <ul class="pagination justify-content-center mb-0 mt-3" id="userActivitiesPagination"></ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -203,7 +203,7 @@ $activity_type = $_GET['activity_type'] ?? '';
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="userDetailsTable">
                     <thead>
                         <tr>
                             <th>ID Number</th>
@@ -223,6 +223,9 @@ $activity_type = $_GET['activity_type'] ?? '';
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="User details pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="userDetailsPagination"></ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -233,6 +236,22 @@ $activity_type = $_GET['activity_type'] ?? '';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     initializeUserCharts();
+
+    if ($('#userActivitiesTable tbody tr').length > 0) {
+        createPagination({
+            getItems: () => $('#userActivitiesTable tbody tr'),
+            paginationContainer: '#userActivitiesPagination',
+            rowsPerPage: 10
+        }).refresh();
+    }
+
+    if ($('#userDetailsTable tbody tr').length > 0) {
+        createPagination({
+            getItems: () => $('#userDetailsTable tbody tr'),
+            paginationContainer: '#userDetailsPagination',
+            rowsPerPage: 10
+        }).refresh();
+    }
 });
 
 function initializeUserCharts() {
@@ -283,10 +302,8 @@ function initializeUserCharts() {
     });
 }
 
-function exportUserReport(format) {
+function exportUserReport() {
     const filters = new URLSearchParams(window.location.search);
-    filters.set('export', format);
-    
     window.open(`php/user-reports-export.php?${filters.toString()}`, '_blank');
 }
 </script>

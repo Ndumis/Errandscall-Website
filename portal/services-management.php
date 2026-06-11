@@ -196,6 +196,11 @@ $conn->close();
                     </tbody>
                 </table>
             </div>
+            <?php if ($services_result->num_rows > 0): ?>
+            <nav aria-label="Services pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="servicesPagination"></ul>
+            </nav>
+            <?php endif; ?>
         </div>
     </div>
 </div>

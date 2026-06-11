@@ -98,7 +98,7 @@ $conn->close();
         <div class="card-body">
             <?php if ($available_services_result->num_rows > 0): ?>
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="availableServicesTable">
                         <thead>
                             <tr>
                                 <th>Service ID</th>
@@ -144,6 +144,9 @@ $conn->close();
                         </tbody>
                     </table>
                 </div>
+                <nav aria-label="Available services pagination">
+                    <ul class="pagination justify-content-center mb-0 mt-3" id="availableServicesPagination"></ul>
+                </nav>
             <?php else: ?>
                 <div class="text-center py-4">
                     <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
@@ -228,6 +231,9 @@ $conn->close();
                         </tbody>
                     </table>
                 </div>
+                <nav aria-label="Assigned services pagination">
+                    <ul class="pagination justify-content-center mb-0 mt-3" id="assignedServicesPagination"></ul>
+                </nav>
             <?php else: ?>
                 <div class="text-center py-4">
                     <i class="fas fa-tasks fa-2x text-muted mb-3"></i>

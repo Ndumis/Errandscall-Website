@@ -4,17 +4,32 @@ $(document).ready(function() {
     // Load service statistics and vehicles
     loadServiceStatistics();
     
+    // Pagination for the services table, aware of the active status filter
+    let servicesPager = null;
+    if ($('#servicesTable tbody tr.service-row').length > 0) {
+        servicesPager = createPagination({
+            getItems: () => $('#servicesTable tbody tr.service-row'),
+            getFilteredItems: () => {
+                const status = $('.filter-btn.active').data('status');
+                if (!status || status === 'all') {
+                    return $('#servicesTable tbody tr.service-row');
+                }
+                return $('#servicesTable tbody tr.service-row[data-status="' + status + '"]');
+            },
+            paginationContainer: '#servicesPagination',
+            rowsPerPage: 10
+        });
+        servicesPager.refresh();
+    }
+
     // Filter services by status
     $('.filter-btn').on('click', function() {
         $('.filter-btn').removeClass('active');
         $(this).addClass('active');
-        
-        const status = $(this).data('status');
-        if (status === 'all') {
-            $('.service-row').show();
-        } else {
-            $('.service-row').hide();
-            $('.service-row[data-status="' + status + '"]').show();
+
+        if (servicesPager) {
+            servicesPager.resetPage();
+            servicesPager.refresh();
         }
     });
 

@@ -40,7 +40,7 @@ $conn->close();
     </div>
 
     <!-- Vehicles Grid -->
-    <div class="row">
+    <div class="row" id="vehiclesGrid">
         <?php if ($vehicles_result->num_rows > 0): ?>
             <?php while($vehicle = $vehicles_result->fetch_assoc()): ?>
             <div class="col-lg-4 col-md-6 mb-4">
@@ -151,6 +151,12 @@ $conn->close();
             </div>
         <?php endif; ?>
     </div>
+
+    <?php if ($vehicles_result->num_rows > 0): ?>
+    <nav aria-label="Vehicles pagination">
+        <ul class="pagination justify-content-center mt-3" id="vehiclesPagination"></ul>
+    </nav>
+    <?php endif; ?>
 </div>
 
 <!-- Add Vehicle Modal -->

@@ -24,11 +24,8 @@ $expiry_status = $_GET['expiry_status'] ?? '';
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gradient">Vehicle Reports</h1>
         <div class="btn-group">
-            <button class="btn btn-outline-primary" onclick="exportVehicleReport('pdf')">
-                <i class="fas fa-file-pdf mr-2"></i>Export PDF
-            </button>
-            <button class="btn btn-outline-primary" onclick="exportVehicleReport('excel')">
-                <i class="fas fa-file-excel mr-2"></i>Export Excel
+            <button class="btn btn-outline-primary" onclick="exportVehicleReport()">
+                <i class="fas fa-file-csv mr-2"></i>Export CSV
             </button>
         </div>
     </div>
@@ -172,7 +169,7 @@ $expiry_status = $_GET['expiry_status'] ?? '';
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="vehicleDetailsTable">
                     <thead>
                         <tr>
                             <th>License Plate</th>
@@ -191,6 +188,9 @@ $expiry_status = $_GET['expiry_status'] ?? '';
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Vehicle details pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="vehicleDetailsPagination"></ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -201,6 +201,14 @@ $expiry_status = $_GET['expiry_status'] ?? '';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     initializeVehicleCharts();
+
+    if ($('#vehicleDetailsTable tbody tr').length > 0) {
+        createPagination({
+            getItems: () => $('#vehicleDetailsTable tbody tr'),
+            paginationContainer: '#vehicleDetailsPagination',
+            rowsPerPage: 10
+        }).refresh();
+    }
 });
 
 function initializeVehicleCharts() {
@@ -273,10 +281,8 @@ function initializeVehicleCharts() {
     });
 }
 
-function exportVehicleReport(format) {
+function exportVehicleReport() {
     const filters = new URLSearchParams(window.location.search);
-    filters.set('export', format);
-    
     window.open(`php/vehicle-reports-export.php?${filters.toString()}`, '_blank');
 }
 </script>

@@ -63,6 +63,9 @@ include('includes/sidebar.php');
                                 </tbody>
                             </table>
                         </div>
+                        <nav aria-label="Ratings pagination">
+                            <ul class="pagination justify-content-center mb-0 mt-3" id="ratingsPagination"></ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -173,9 +176,11 @@ function loadRatings() {
         .catch(error => console.error('Error:', error));
 }
 
+let ratingsPager = null;
+
 function displayRatings(ratings) {
     const tbody = document.getElementById('ratingsTableBody');
-    
+
     if (ratings.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -188,9 +193,10 @@ function displayRatings(ratings) {
                 </td>
             </tr>
         `;
+        $('#ratingsPagination').empty();
         return;
     }
-    
+
     let html = '';
     ratings.forEach(rating => {
         const stars = generateStars(rating.rating);
@@ -217,8 +223,17 @@ function displayRatings(ratings) {
             </tr>
         `;
     });
-    
+
     tbody.innerHTML = html;
+
+    if (!ratingsPager) {
+        ratingsPager = createPagination({
+            getItems: () => $('#ratingsTableBody tr'),
+            paginationContainer: '#ratingsPagination',
+            rowsPerPage: 10
+        });
+    }
+    ratingsPager.refresh();
 }
 
 function generateStars(rating) {

@@ -4,17 +4,42 @@ $(document).ready(function() {
     // Load service statistics
     loadServiceStatistics();
     
+    // Pagination for the available services table
+    if ($('#availableServicesTable tbody tr').length > 0) {
+        const availablePager = createPagination({
+            getItems: () => $('#availableServicesTable tbody tr'),
+            paginationContainer: '#availableServicesPagination',
+            rowsPerPage: 10
+        });
+        availablePager.refresh();
+    }
+
+    // Pagination for the assigned services table, aware of the active status filter
+    let assignedPager = null;
+    if ($('#assignedServicesTable tbody tr.service-row').length > 0) {
+        assignedPager = createPagination({
+            getItems: () => $('#assignedServicesTable tbody tr.service-row'),
+            getFilteredItems: () => {
+                const status = $('.filter-btn.active').data('status');
+                if (!status || status === 'all') {
+                    return $('#assignedServicesTable tbody tr.service-row');
+                }
+                return $('#assignedServicesTable tbody tr.service-row[data-status="' + status + '"]');
+            },
+            paginationContainer: '#assignedServicesPagination',
+            rowsPerPage: 10
+        });
+        assignedPager.refresh();
+    }
+
     // Filter services by status
     $('.filter-btn').on('click', function() {
         $('.filter-btn').removeClass('active');
         $(this).addClass('active');
-        
-        const status = $(this).data('status');
-        if (status === 'all') {
-            $('.service-row').show();
-        } else {
-            $('.service-row').hide();
-            $('.service-row[data-status="' + status + '"]').show();
+
+        if (assignedPager) {
+            assignedPager.resetPage();
+            assignedPager.refresh();
         }
     });
 

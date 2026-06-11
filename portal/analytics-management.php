@@ -19,11 +19,8 @@ $conn = getDBConnection();
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gradient">Analytics & Reports</h1>
         <div class="btn-group">
-            <button class="btn btn-outline-primary" id="exportPdf">
-                <i class="fas fa-file-pdf mr-2"></i>Export PDF
-            </button>
-            <button class="btn btn-outline-primary" id="exportExcel">
-                <i class="fas fa-file-excel mr-2"></i>Export Excel
+            <button class="btn btn-outline-primary" id="exportCsv">
+                <i class="fas fa-file-csv mr-2"></i>Export CSV
             </button>
         </div>
     </div>

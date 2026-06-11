@@ -348,6 +348,16 @@ $(document).ready(function() {
 
     // Initialize document upload functionality
     initDocumentUpload();
+
+    // Pagination for the vehicles grid
+    if ($('#vehiclesGrid > .col-lg-4').length > 0) {
+        const vehiclesPager = createPagination({
+            getItems: () => $('#vehiclesGrid > .col-lg-4'),
+            paginationContainer: '#vehiclesPagination',
+            rowsPerPage: 9
+        });
+        vehiclesPager.refresh();
+    }
 });
 
 // Initialize document upload functionality

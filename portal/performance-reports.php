@@ -23,11 +23,8 @@ $metric = $_GET['metric'] ?? 'completion_rate';
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gradient">Performance Reports</h1>
         <div class="btn-group">
-            <button class="btn btn-outline-primary" onclick="exportPerformanceReport('pdf')">
-                <i class="fas fa-file-pdf mr-2"></i>Export PDF
-            </button>
-            <button class="btn btn-outline-primary" onclick="exportPerformanceReport('excel')">
-                <i class="fas fa-file-excel mr-2"></i>Export Excel
+            <button class="btn btn-outline-primary" onclick="exportPerformanceReport()">
+                <i class="fas fa-file-csv mr-2"></i>Export CSV
             </button>
         </div>
     </div>
@@ -161,7 +158,7 @@ $metric = $_GET['metric'] ?? 'completion_rate';
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="workerPerformanceDetailsTable">
                     <thead>
                         <tr>
                             <th>Worker</th>
@@ -179,6 +176,9 @@ $metric = $_GET['metric'] ?? 'completion_rate';
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Worker performance details pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="workerPerformanceDetailsPagination"></ul>
+            </nav>
         </div>
     </div>
 
@@ -189,7 +189,7 @@ $metric = $_GET['metric'] ?? 'completion_rate';
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="serviceTypePerformanceTable">
                     <thead>
                         <tr>
                             <th>Service Type</th>
@@ -204,6 +204,9 @@ $metric = $_GET['metric'] ?? 'completion_rate';
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Service type performance pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="serviceTypePerformancePagination"></ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -214,6 +217,22 @@ $metric = $_GET['metric'] ?? 'completion_rate';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     initializePerformanceCharts();
+
+    if ($('#workerPerformanceDetailsTable tbody tr').length > 0) {
+        createPagination({
+            getItems: () => $('#workerPerformanceDetailsTable tbody tr'),
+            paginationContainer: '#workerPerformanceDetailsPagination',
+            rowsPerPage: 10
+        }).refresh();
+    }
+
+    if ($('#serviceTypePerformanceTable tbody tr').length > 0) {
+        createPagination({
+            getItems: () => $('#serviceTypePerformanceTable tbody tr'),
+            paginationContainer: '#serviceTypePerformancePagination',
+            rowsPerPage: 10
+        }).refresh();
+    }
 });
 
 function initializePerformanceCharts() {
@@ -331,10 +350,8 @@ function initializePerformanceCharts() {
     });
 }
 
-function exportPerformanceReport(format) {
+function exportPerformanceReport() {
     const filters = new URLSearchParams(window.location.search);
-    filters.set('export', format);
-    
     window.open(`php/performance-reports-export.php?${filters.toString()}`, '_blank');
 }
 </script>
@@ -492,8 +509,48 @@ function getWorkerCompletionTimes($conn, $start_date, $end_date) {
 }
 
 function getPerformanceDistribution($conn, $start_date, $end_date) {
-    // This is a simplified distribution - in practice, you'd calculate actual worker performance
-    return [25, 35, 25, 15]; // Example distribution
+    $stmt = $conn->prepare("
+        SELECT u.id,
+               COUNT(s.id) as total_assignments,
+               SUM(CASE WHEN s.status = 'completed' THEN 1 ELSE 0 END) as completed,
+               AVG(CASE WHEN s.status = 'completed' THEN TIMESTAMPDIFF(HOUR, s.created_at, s.updated_at) ELSE NULL END) as avg_time,
+               SUM(CASE WHEN s.status = 'completed' AND TIMESTAMPDIFF(HOUR, s.created_at, s.updated_at) <= 24 THEN 1 ELSE 0 END) as on_time
+        FROM users u
+        LEFT JOIN services s ON u.id = s.assigned_to AND DATE(s.created_at) BETWEEN ? AND ?
+        WHERE u.role = 'worker'
+        GROUP BY u.id
+    ");
+    $stmt->bind_param("ss", $start_date, $end_date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Buckets: Excellent (90-100%), Good (75-89%), Average (60-74%), Needs Improvement (<60%)
+    $buckets = [0, 0, 0, 0];
+
+    while ($row = $result->fetch_assoc()) {
+        if ($row['total_assignments'] == 0) {
+            continue;
+        }
+
+        $completion_rate = ($row['completed'] / $row['total_assignments']) * 100;
+        $on_time_rate = $row['completed'] > 0 ? ($row['on_time'] / $row['completed']) * 100 : 0;
+        $avg_time = $row['avg_time'] ?? 0;
+
+        $performance_score = min(100, ($completion_rate * 0.4) + ((100 - min($avg_time, 48) * 2.08) * 0.3) + ($on_time_rate * 0.3));
+
+        if ($performance_score >= 90) {
+            $buckets[0]++;
+        } elseif ($performance_score >= 75) {
+            $buckets[1]++;
+        } elseif ($performance_score >= 60) {
+            $buckets[2]++;
+        } else {
+            $buckets[3]++;
+        }
+    }
+    $stmt->close();
+
+    return $buckets;
 }
 
 function getPerformanceTrendLabels($conn) {

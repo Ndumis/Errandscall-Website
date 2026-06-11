@@ -24,11 +24,8 @@ $priority = $_GET['priority'] ?? '';
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0 text-gradient">Service Reports</h1>
         <div class="btn-group">
-            <button class="btn btn-outline-primary" onclick="exportServiceReport('pdf')">
-                <i class="fas fa-file-pdf mr-2"></i>Export PDF
-            </button>
-            <button class="btn btn-outline-primary" onclick="exportServiceReport('excel')">
-                <i class="fas fa-file-excel mr-2"></i>Export Excel
+            <button class="btn btn-outline-primary" onclick="exportServiceReport()">
+                <i class="fas fa-file-csv mr-2"></i>Export CSV
             </button>
         </div>
     </div>
@@ -167,7 +164,7 @@ $priority = $_GET['priority'] ?? '';
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="serviceDetailsTable">
                     <thead>
                         <tr>
                             <th>Service ID</th>
@@ -186,6 +183,9 @@ $priority = $_GET['priority'] ?? '';
                     </tbody>
                 </table>
             </div>
+            <nav aria-label="Service details pagination">
+                <ul class="pagination justify-content-center mb-0 mt-3" id="serviceDetailsPagination"></ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -197,6 +197,14 @@ $priority = $_GET['priority'] ?? '';
 // Initialize charts when page loads
 document.addEventListener('DOMContentLoaded', function() {
     initializeServiceCharts();
+
+    if ($('#serviceDetailsTable tbody tr').length > 0) {
+        createPagination({
+            getItems: () => $('#serviceDetailsTable tbody tr'),
+            paginationContainer: '#serviceDetailsPagination',
+            rowsPerPage: 10
+        }).refresh();
+    }
 });
 
 function initializeServiceCharts() {
@@ -243,10 +251,8 @@ function initializeServiceCharts() {
     });
 }
 
-function exportServiceReport(format) {
+function exportServiceReport() {
     const filters = new URLSearchParams(window.location.search);
-    filters.set('export', format);
-    
     window.open(`php/service-reports-export.php?${filters.toString()}`, '_blank');
 }
 </script>

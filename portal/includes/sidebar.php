@@ -166,18 +166,24 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    if (data.unreadMessages > 0) {
-                        document.getElementById('unreadMessagesCount').textContent = data.unreadMessages;
-                        document.getElementById('unreadMessagesCount').style.display = 'inline';
-                    } else {
-                        document.getElementById('unreadMessagesCount').style.display = 'none';
+                    const messagesBadge = document.getElementById('unreadMessagesCount');
+                    if (messagesBadge) {
+                        if (data.unreadMessages > 0) {
+                            messagesBadge.textContent = data.unreadMessages;
+                            messagesBadge.style.display = 'inline';
+                        } else {
+                            messagesBadge.style.display = 'none';
+                        }
                     }
-                    
-                    if (data.unreadNotifications > 0) {
-                        document.getElementById('unreadNotificationsCount').textContent = data.unreadNotifications;
-                        document.getElementById('unreadNotificationsCount').style.display = 'inline';
-                    } else {
-                        document.getElementById('unreadNotificationsCount').style.display = 'none';
+
+                    const notificationsBadge = document.getElementById('notificationCount');
+                    if (notificationsBadge) {
+                        if (data.unreadNotifications > 0) {
+                            notificationsBadge.textContent = data.unreadNotifications;
+                            notificationsBadge.style.display = 'inline';
+                        } else {
+                            notificationsBadge.style.display = 'none';
+                        }
                     }
                 }
             })

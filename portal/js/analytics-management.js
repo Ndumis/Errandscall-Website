@@ -20,12 +20,12 @@ class AnalyticsManager {
             this.safeInitialize();
         }
     }
-	
+
 	 isAnalyticsPage() {
         // Check if we're on the analytics page by looking for specific elements
         return document.getElementById('reportFilters') !== null;
     }
-	
+
 	safeInitialize() {
         try {
             this.bindEvents();
@@ -41,15 +41,14 @@ class AnalyticsManager {
             const reportType = document.getElementById('reportType');
             const dateRange = document.getElementById('dateRange');
             const reportFilters = document.getElementById('reportFilters');
-            const exportPdf = document.getElementById('exportPdf');
-            const exportExcel = document.getElementById('exportExcel');
+            const exportCsv = document.getElementById('exportCsv');
             const refreshReport = document.getElementById('refreshReport');
             const saveReport = document.getElementById('saveReport');
 
             if (reportType) {
                 reportType.addEventListener('change', () => this.loadReport());
             }
-            
+
             if (dateRange) {
                 dateRange.addEventListener('change', () => {
                     const customDates = document.querySelectorAll('.custom-date');
@@ -68,14 +67,19 @@ class AnalyticsManager {
                 });
             }
 
-            if (exportPdf) exportPdf.addEventListener('click', () => this.exportReport('pdf'));
-            if (exportExcel) exportExcel.addEventListener('click', () => this.exportReport('excel'));
+            if (exportCsv) exportCsv.addEventListener('click', () => this.exportCsv());
             if (refreshReport) refreshReport.addEventListener('click', () => this.loadReport());
             if (saveReport) saveReport.addEventListener('click', () => this.saveReport());
 
         } catch (error) {
             console.error('Error binding events:', error);
         }
+    }
+
+    updateCharts(data) {
+        const charts = data.charts || {};
+        this.updateServicesChart(charts.servicesTrend);
+        this.updateServiceTypesChart(charts.serviceTypes);
     }
 
     updateServicesChart(chartData) {
@@ -85,7 +89,7 @@ class AnalyticsManager {
                 console.warn('Services chart element not found');
                 return;
             }
-            
+
             // Destroy existing chart if it exists
             if (this.charts.services) {
                 this.charts.services.destroy();
@@ -101,14 +105,24 @@ class AnalyticsManager {
                 type: 'line',
                 data: {
                     labels: chartData.labels,
-                    datasets: [{
-                        label: 'Services Created',
-                        data: chartData.data,
-                        borderColor: '#ff8c00',
-                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
+                    datasets: [
+                        {
+                            label: 'Services Created',
+                            data: chartData.created || [],
+                            borderColor: '#ff8c00',
+                            backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Services Completed',
+                            data: chartData.completed || [],
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
@@ -140,12 +154,12 @@ class AnalyticsManager {
     async loadReport() {
         const filters = this.getFilters();
         this.currentFilters = filters;
-        
+
         try {
             this.showLoading();
-            
+
             const response = await this.ajaxRequest('php/analytics-management.php', 'GET', filters);
-            
+
             if (response.success) {
                 this.updateCharts(response.data);
                 this.updateStats(response.data.stats);
@@ -165,10 +179,10 @@ class AnalyticsManager {
     getFilters() {
         const form = document.getElementById('reportFilters');
         if (!form) return {};
-        
+
         const formData = new FormData(form);
         const filters = {};
-        
+
         for (let [key, value] of formData.entries()) {
             filters[key] = value;
         }
@@ -228,117 +242,10 @@ class AnalyticsManager {
         };
     }
 
-    updateServicesChart(chartData) {
-        try {
-            const ctx = document.getElementById('servicesChart');
-            if (!ctx) {
-                console.warn('Services chart element not found');
-                return;
-            }
-            
-            // Destroy existing chart if it exists
-            if (this.charts.services) {
-                this.charts.services.destroy();
-            }
-
-            // Check if we have data to display
-            if (!chartData || !chartData.labels || chartData.labels.length === 0) {
-                ctx.innerHTML = '<div class="text-center p-4"><p>No data available for the selected period</p></div>';
-                return;
-            }
-
-            this.charts.services = new Chart(ctx.getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: chartData.labels,
-                    datasets: [{
-                        label: 'Services Created',
-                        data: chartData.data,
-                        borderColor: '#ff8c00',
-                        backgroundColor: 'rgba(255, 140, 0, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error updating services chart:', error);
-            const ctx = document.getElementById('servicesChart');
-            if (ctx) {
-                ctx.innerHTML = '<div class="text-center p-4 text-danger"><p>Error loading chart</p></div>';
-            }
-        }
-    }
-
-    updateServiceTypesChart(chartData) {
-        try {
-            const ctx = document.getElementById('serviceTypesChart');
-            if (!ctx) {
-                console.warn('Service types chart element not found');
-                return;
-            }
-            
-            if (this.charts.serviceTypes) {
-                this.charts.serviceTypes.destroy();
-            }
-
-            // Check if we have data to display
-            if (!chartData || !chartData.labels || chartData.labels.length === 0) {
-                ctx.innerHTML = '<div class="text-center p-4"><p>No data available for the selected period</p></div>';
-                return;
-            }
-
-            this.charts.serviceTypes = new Chart(ctx.getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: chartData.labels,
-                    datasets: [{
-                        data: chartData.data,
-                        backgroundColor: [
-                            '#ff8c00', '#ff6b00', '#ffd700', '#2c3e50', '#28a745', '#dc3545'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                        }
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error updating service types chart:', error);
-            const ctx = document.getElementById('serviceTypesChart');
-            if (ctx) {
-                ctx.innerHTML = '<div class="text-center p-4 text-danger"><p>Error loading chart</p></div>';
-            }
-        }
-    }
-
     updateServiceTypesChart(chartData) {
         const ctx = document.getElementById('serviceTypesChart');
         if (!ctx) return;
-        
+
         if (this.charts.serviceTypes) {
             this.charts.serviceTypes.destroy();
         }
@@ -346,9 +253,9 @@ class AnalyticsManager {
         this.charts.serviceTypes = new Chart(ctx.getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: chartData.labels || [],
+                labels: (chartData && chartData.labels) || [],
                 datasets: [{
-                    data: chartData.data || [],
+                    data: (chartData && chartData.data) || [],
                     backgroundColor: [
                         '#ff8c00', '#ff6b00', '#ffd700', '#2c3e50', '#28a745', '#dc3545'
                     ]
@@ -367,7 +274,7 @@ class AnalyticsManager {
 
     updateStats(stats) {
         if (!stats) return;
-        
+
         const updateElement = (id, value) => {
             const element = document.getElementById(id);
             if (element) element.textContent = value;
@@ -404,14 +311,22 @@ class AnalyticsManager {
         }
 
         reportContent.innerHTML = html;
+
+        if ($('#reportDetailsTable tbody tr').length > 0) {
+            createPagination({
+                getItems: () => $('#reportDetailsTable tbody tr'),
+                paginationContainer: '#reportDetailsPagination',
+                rowsPerPage: 10
+            }).refresh();
+        }
     }
 
     renderServicesTable(data) {
-        if (!data || !Array.isArray(data)) return '<p>No data available</p>';
-        
+        if (!data || !Array.isArray(data) || data.length === 0) return '<p>No data available</p>';
+
         return `
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="reportDetailsTable">
                     <thead>
                         <tr>
                             <th>Service Type</th>
@@ -434,15 +349,16 @@ class AnalyticsManager {
                     </tbody>
                 </table>
             </div>
+            <nav><ul class="pagination justify-content-center mb-0 mt-3" id="reportDetailsPagination"></ul></nav>
         `;
     }
 
     renderVehiclesTable(data) {
-        if (!data || !Array.isArray(data)) return '<p>No data available</p>';
-        
+        if (!data || !Array.isArray(data) || data.length === 0) return '<p>No data available</p>';
+
         return `
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="reportDetailsTable">
                     <thead>
                         <tr>
                             <th>Make</th>
@@ -465,15 +381,16 @@ class AnalyticsManager {
                     </tbody>
                 </table>
             </div>
+            <nav><ul class="pagination justify-content-center mb-0 mt-3" id="reportDetailsPagination"></ul></nav>
         `;
     }
 
     renderOverviewTable(data) {
-        if (!data || !Array.isArray(data)) return '<p>No data available</p>';
-        
+        if (!data || !Array.isArray(data) || data.length === 0) return '<p>No data available</p>';
+
         return `
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="reportDetailsTable">
                     <thead>
                         <tr>
                             <th>Service Type</th>
@@ -496,15 +413,16 @@ class AnalyticsManager {
                     </tbody>
                 </table>
             </div>
+            <nav><ul class="pagination justify-content-center mb-0 mt-3" id="reportDetailsPagination"></ul></nav>
         `;
     }
 
     renderUsersTable(data) {
-        if (!data || !Array.isArray(data)) return '<p>No data available</p>';
-        
+        if (!data || !Array.isArray(data) || data.length === 0) return '<p>No data available</p>';
+
         return `
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="reportDetailsTable">
                     <thead>
                         <tr>
                             <th>Role</th>
@@ -525,15 +443,16 @@ class AnalyticsManager {
                     </tbody>
                 </table>
             </div>
+            <nav><ul class="pagination justify-content-center mb-0 mt-3" id="reportDetailsPagination"></ul></nav>
         `;
     }
 
     renderPerformanceTable(data) {
-        if (!data || !Array.isArray(data)) return '<p>No data available</p>';
-        
+        if (!data || !Array.isArray(data) || data.length === 0) return '<p>No data available</p>';
+
         return `
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" id="reportDetailsTable">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -558,6 +477,7 @@ class AnalyticsManager {
                     </tbody>
                 </table>
             </div>
+            <nav><ul class="pagination justify-content-center mb-0 mt-3" id="reportDetailsPagination"></ul></nav>
         `;
     }
 
@@ -567,7 +487,11 @@ class AnalyticsManager {
             formData.append(key, data[key]);
         }
 
-        const response = await fetch(url, {
+        const requestUrl = method === 'GET' && formData.toString()
+            ? `${url}?${formData.toString()}`
+            : url;
+
+        const response = await fetch(requestUrl, {
             method: method,
             body: method === 'GET' ? null : formData,
             headers: method === 'POST' ? {
@@ -582,28 +506,10 @@ class AnalyticsManager {
         return await response.json();
     }
 
-    async exportReport(format) {
-        try {
-            const response = await this.ajaxRequest('php/analytics-management.php', 'POST', {
-                action: 'export',
-                format: format,
-                ...this.currentFilters
-            });
-
-            if (response.success) {
-                // Create download link
-                const link = document.createElement('a');
-                link.href = response.file_url;
-                link.download = response.file_name;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else {
-                this.showError(response.message);
-            }
-        } catch (error) {
-            this.showError('Export failed: ' + error.message);
-        }
+    exportCsv() {
+        const filters = this.getFilters();
+        const params = new URLSearchParams(filters);
+        window.open(`php/analytics-management-export.php?${params.toString()}`, '_blank');
     }
 
     async saveReport() {

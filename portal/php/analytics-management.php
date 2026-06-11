@@ -140,10 +140,23 @@ function getBasicStats($conn, $start_date, $end_date) {
     $stmt->close();
     
     $stats = array_merge($stats, $services_stats);
-    
+
     // Revenue (placeholder - add payments table later)
     $stats['revenue'] = 0;
-    
+
+    // Active workers (workers assigned to at least one service in range)
+    $stmt = $conn->prepare("
+        SELECT COUNT(DISTINCT assigned_to) as active_workers
+        FROM services
+        WHERE assigned_to IS NOT NULL AND DATE(created_at) BETWEEN ? AND ?
+    ");
+    $stmt->bind_param("ss", $start_date, $end_date);
+    $stmt->execute();
+    $worker_stats = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    $stats['active_workers'] = (int)($worker_stats['active_workers'] ?? 0);
+
     // Average completion time
     $stmt = $conn->prepare("
         SELECT AVG(TIMESTAMPDIFF(HOUR, created_at, updated_at)) as avg_completion
@@ -161,27 +174,68 @@ function getBasicStats($conn, $start_date, $end_date) {
 }
 
 function getServicesTrend($conn, $start_date, $end_date) {
+    $days = (strtotime($end_date) - strtotime($start_date)) / 86400;
+    $byMonth = $days > 31;
+    $groupFormat = $byMonth ? '%Y-%m' : '%Y-%m-%d';
+    $labelFormat = $byMonth ? 'M Y' : 'M j';
+
+    // Created counts per period
     $stmt = $conn->prepare("
-        SELECT DATE(created_at) as date, COUNT(*) as count
-        FROM services 
+        SELECT DATE_FORMAT(created_at, ?) as period, COUNT(*) as count
+        FROM services
         WHERE DATE(created_at) BETWEEN ? AND ?
-        GROUP BY DATE(created_at)
-        ORDER BY date
+        GROUP BY period
+        ORDER BY period
     ");
-    $stmt->bind_param("ss", $start_date, $end_date);
+    $stmt->bind_param("sss", $groupFormat, $start_date, $end_date);
     $stmt->execute();
     $result = $stmt->get_result();
-    
-    $labels = [];
-    $data = [];
-    
+
+    $created = [];
     while ($row = $result->fetch_assoc()) {
-        $labels[] = date('M j', strtotime($row['date']));
-        $data[] = $row['count'];
+        $created[$row['period']] = (int)$row['count'];
     }
     $stmt->close();
-    
-    return ['labels' => $labels, 'data' => $data];
+
+    // Completed counts per period (based on when they were completed)
+    $stmt = $conn->prepare("
+        SELECT DATE_FORMAT(updated_at, ?) as period, COUNT(*) as count
+        FROM services
+        WHERE status = 'completed' AND DATE(updated_at) BETWEEN ? AND ?
+        GROUP BY period
+        ORDER BY period
+    ");
+    $stmt->bind_param("sss", $groupFormat, $start_date, $end_date);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $completed = [];
+    while ($row = $result->fetch_assoc()) {
+        $completed[$row['period']] = (int)$row['count'];
+    }
+    $stmt->close();
+
+    // Build a continuous list of periods between start and end
+    $periods = [];
+    $cursor = strtotime($start_date);
+    $end = strtotime($end_date);
+    while ($cursor <= $end) {
+        $key = date($byMonth ? 'Y-m' : 'Y-m-d', $cursor);
+        $periods[$key] = true;
+        $cursor = $byMonth ? strtotime('+1 month', $cursor) : strtotime('+1 day', $cursor);
+    }
+
+    $labels = [];
+    $createdData = [];
+    $completedData = [];
+
+    foreach (array_keys($periods) as $period) {
+        $labels[] = date($labelFormat, strtotime($period . ($byMonth ? '-01' : '')));
+        $createdData[] = $created[$period] ?? 0;
+        $completedData[] = $completed[$period] ?? 0;
+    }
+
+    return ['labels' => $labels, 'created' => $createdData, 'completed' => $completedData];
 }
 
 function getServiceTypesDistribution($conn, $start_date, $end_date) {
