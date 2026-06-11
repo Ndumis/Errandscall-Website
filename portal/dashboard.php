@@ -78,7 +78,7 @@ if (hasAccess(['admin', 'manager'])) {
     $total_users = $users_result->fetch_assoc()['total'];
     $users_stmt->close();
     
-    $workers_stmt = $conn->prepare("SELECT COUNT(*) as total FROM users WHERE role = 'worker'");
+    $workers_stmt = $conn->prepare("SELECT COUNT(*) as total FROM users WHERE role = 'worker' AND status = 'active'");
     $workers_stmt->execute();
     $workers_result = $workers_stmt->get_result();
     $active_workers = $workers_result->fetch_assoc()['total'];
@@ -271,11 +271,14 @@ if (hasAccess(['admin', 'manager'])) {
         <!-- Recent Activity -->
         <div class="col-lg-6 mb-4">
             <div class="card">
-                <div class="card-header bg-gradient text-white">
+                <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Recent Activity</h5>
+                    <?php if (hasAccess(['admin', 'manager'])): ?>
+                    <a href="user-reports.php" class="text-white">View All</a>
+                    <?php endif; ?>
                 </div>
                 <div class="card-body">
-                    <div id="recentActivity">
+                    <div id="recentActivity" class="recent-activity-list">
                         <div class="text-center py-4">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="sr-only">Loading...</span>

@@ -97,8 +97,10 @@ function loadRecentVehicles() {
                         const today = new Date();
                         const daysUntilExpiry = Math.ceil((discExpiry - today) / (1000 * 60 * 60 * 24));
                         let expiryBadge = '';
-                        
-                        if (daysUntilExpiry <= 7) {
+
+                        if (daysUntilExpiry < 0) {
+                            expiryBadge = '<span class="badge badge-dark ml-2">Expired</span>';
+                        } else if (daysUntilExpiry <= 7) {
                             expiryBadge = '<span class="badge badge-danger ml-2">Expiring Soon</span>';
                         } else if (daysUntilExpiry <= 30) {
                             expiryBadge = '<span class="badge badge-warning ml-2">Expiring</span>';
@@ -146,11 +148,15 @@ function loadRecentServices() {
                 if (response.services.length > 0) {
                     response.services.forEach(service => {
                         const statusClass = getStatusClass(service.status);
+                        const ownerLine = service.owner_name
+                            ? `<small class="text-muted d-block"><i class="fas fa-user mr-1"></i>${service.owner_name}</small>`
+                            : '';
                         html += `
                             <div class="d-flex justify-content-between align-items-center mb-3 p-3 border rounded bg-light">
                                 <div class="flex-grow-1">
                                     <strong class="text-muted d-block">${service.service_type || 'Unknown Service'}</strong>
                                     <small class="text-muted d-block">${service.vehicle_info || 'No vehicle info'}</small>
+                                    ${ownerLine}
                                     <small class="text-muted">Requested: ${formatTime(service.created_at)}</small>
                                 </div>
                                 <span class="badge ${statusClass} ml-2">${service.status || 'pending'}</span>

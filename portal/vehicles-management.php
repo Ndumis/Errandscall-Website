@@ -205,15 +205,15 @@ $conn->close();
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-12 col-lg-6">
                             <label>VIN Number</label>
                             <input type="text" class="form-control" name="vin">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-6 col-lg-3">
                             <label>Disc Expiry *</label>
                             <input type="date" class="form-control" name="disc_expiry" required>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-6 col-lg-3">
                             <label>License Expiry *</label>
                             <input type="date" class="form-control" name="license_expiry" required>
                         </div>
@@ -346,15 +346,15 @@ $conn->close();
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-12 col-lg-6">
                             <label>VIN Number</label>
                             <input type="text" class="form-control" name="vin" id="editVin">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-6 col-lg-3">
                             <label>Disc Expiry *</label>
                             <input type="date" class="form-control" name="disc_expiry" id="editDiscExpiry" required>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-6 col-lg-3">
                             <label>License Expiry *</label>
                             <input type="date" class="form-control" name="license_expiry" id="editLicenseExpiry" required>
                         </div>

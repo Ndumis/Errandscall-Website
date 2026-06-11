@@ -75,14 +75,7 @@ if (!function_exists('createTables')) {
 		// Services table
 		$services_sql = "CREATE TABLE IF NOT EXISTS services (
 			id INT(11) AUTO_INCREMENT PRIMARY KEY,
-			service_type ENUM(
-				'Vehicle License Renewal',
-				'Business Vehicle Registration', 
-				'Vehicle De-registration',
-				'Change of Ownership',
-				'Roadworthy Certificates',
-				'Other'
-			) NOT NULL,
+			service_type VARCHAR(100) NOT NULL,
 			description TEXT,
 			status ENUM('pending', 'assigned', 'in_progress', 'completed', 'cancelled') DEFAULT 'pending',
 			user_id INT(11) NOT NULL,

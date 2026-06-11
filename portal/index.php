@@ -41,8 +41,8 @@ include('includes/header.php');
                             <i class="fas fa-check-circle"></i>
                             <span>24/7 Customer Support</span>
                         </div>
-						  <div class="auth-feature">
-							  <a class="nav-link mr-3 btn btn-gradient" href="../">Back to Main Site</a>
+						  <div class="auth-feature auth-feature--full">
+							  <a class="nav-link btn btn-gradient" href="../">Back to Main Site</a>
 						  </div>
                     </div>
                 </div>

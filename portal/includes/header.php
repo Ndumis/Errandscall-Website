@@ -10,6 +10,10 @@ if (session_status() === PHP_SESSION_NONE) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo isset($page_title) ? $page_title : 'ErrandsCall Portal'; ?></title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
   <!-- Bootstrap CSS (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
@@ -27,7 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
         </button>
         
         <a class="navbar-brand" href="dashboard.php">
-          <img src="../images/logo.png" alt="ErrandsCall Logo" style="height: 40px;">
+          <img src="../images/logo.png" alt="ErrandsCall Logo">
           <span class="ml-2">Portal</span>
         </a>
         
@@ -59,7 +63,7 @@ if (session_status() === PHP_SESSION_NONE) {
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
               <i class="fas fa-user-circle mr-1"></i>
-              <?php echo $_SESSION['user_name']; ?>
+              <span class="d-none d-lg-inline"><?php echo $_SESSION['user_name']; ?></span>
               <span class="badge badge-light ml-1"><?php echo ucfirst($_SESSION['user_role']); ?></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
