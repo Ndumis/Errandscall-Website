@@ -7,6 +7,7 @@ startSecureSession();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title><?php echo isset($page_title) ? $page_title : 'ErrandsCall Portal'; ?></title>
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">

@@ -406,7 +406,7 @@ function viewServiceDetails(serviceId) {
                         const fileName = doc.document_path ? doc.document_path.split('/').pop() : 'Unknown file';
                         html += `
                             <div class="document-item mb-2">
-                                <a href="${escapeHtml(doc.document_path || '#')}" target="_blank" class="text-primary">
+                                <a href="${escapeHtml(doc.view_url || '#')}" target="_blank" rel="noopener" class="text-primary">
                                     <i class="fas fa-file mr-2"></i>${escapeHtml(fileName)}
                                 </a>
                                 <small class="text-muted ml-2">(${(doc.document_type || 'unknown').replace('_', ' ')})</small>

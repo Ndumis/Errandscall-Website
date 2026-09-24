@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mkdir($upload_dir, 0755, true);
     }
 
-    $filename = 'idoc_' . time() . '_' . uniqid() . '.' . $file_ext;
+    $filename = 'idoc_' . bin2hex(random_bytes(16)) . '.' . $file_ext;
     $destination = $upload_dir . $filename;
 
     if (!move_uploaded_file($_FILES['id_document']['tmp_name'], $destination)) {

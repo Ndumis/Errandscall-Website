@@ -1,0 +1,11 @@
+# Customer service documents are private. Block all direct web access;
+# they are served only through php/view-document.php, which checks that
+# the logged-in user is allowed to see the document.
+Require all denied
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>

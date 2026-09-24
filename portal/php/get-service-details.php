@@ -89,6 +89,8 @@ $docs_stmt->execute();
 $docs_result = $docs_stmt->get_result();
 
 while ($doc = $docs_result->fetch_assoc()) {
+    // Documents are not publicly reachable; open them through the access-checked viewer
+    $doc['view_url'] = 'php/view-document.php?id=' . (int) $doc['id'];
     $response['documents'][] = $doc;
 }
 $docs_stmt->close();

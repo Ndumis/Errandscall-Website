@@ -230,15 +230,16 @@ html {
 
 /* ===== Carousel ===== */
 .carousel-item {
+  background-color: #1a0f05;
   background-size: cover;
-  background-position: center;
+  background-position: right center; /* subject sits on the right of the hero images */
   position: relative;
 }
 .carousel-item::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7)); /* stronger overlay */
+  background: rgba(0,0,0,0.3); /* light overlay; the caption box keeps the text readable */
 }
 
 /* Flex wrapper that centers the caption within the slide
@@ -561,24 +562,25 @@ section h2 {
 
 /* Responsive adjustments */
 
-/* Large desktops / wide screens */
-@media (min-width: 1200px) {
+/* Desktops: short, wide hero like the page banners */
+@media (min-width: 992px) {
   .carousel-content {
-    min-height: 70vh;
-    padding: 90px 15px;
+    /* fixed height (not min-height) so every slide is the same size and the
+       page below doesn't jump when the slide changes. Follows the images'
+       shape (1672x312 = 18.66vw) but leaves room for the caption box. */
+    height: max(420px, 18.66vw);
+    min-height: 0;
+    padding: 30px 15px;
   }
 
   .carousel-caption {
     max-width: 800px;
-    padding: 2.5rem 3rem;
+    padding: 1.5rem 2.5rem;
   }
 
-  .carousel-caption h1 {
-    font-size: 3rem;
-  }
-
+  .carousel-caption h1,
   .carousel-caption h2 {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
   }
 }
 
@@ -1132,6 +1134,7 @@ section h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top; /* keep faces in view on portrait photos */
   transition: transform 0.3s ease;
 }
 
@@ -1472,4 +1475,231 @@ section h2 {
 
 .my-float{
 	margin-top:16px;
+}
+
+/* WhatsApp message popup (opened by .floatWhatsapp) */
+.wa-popup {
+  position: fixed;
+  right: 30px;
+  bottom: 130px; /* sits just above the floating button */
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  z-index: 101;
+}
+
+.wa-popup[hidden] {
+  display: none;
+}
+
+.wa-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #075e54;
+  color: #fff;
+  padding: 0.9rem 1rem;
+}
+
+.wa-popup-header > i {
+  font-size: 1.8rem;
+}
+
+.wa-popup-header strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.wa-popup-header span {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.wa-popup-close {
+  margin-left: auto;
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.wa-popup-body {
+  padding: 1rem;
+  background: #ece5dd;
+}
+
+.wa-popup-body label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.4rem;
+}
+
+.wa-popup-body textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+  resize: vertical;
+  min-height: 90px;
+}
+
+.wa-popup-body textarea:focus {
+  outline: none;
+  border-color: #25d366;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.25);
+}
+
+.wa-popup-send {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  background: #25d366;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wa-popup-send:hover {
+  background: #1ebe5b;
+}
+
+@media (max-width: 480px) {
+  .wa-popup {
+    right: 16px;
+    bottom: 130px;
+  }
+}
+/* ===== Cookie consent banner (includes/cookie-consent.php) ===== */
+.cookie-consent {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1040; /* above the WhatsApp button, below Bootstrap modals */
+  display: flex;
+  justify-content: center;
+}
+
+.cookie-consent[hidden] {
+  display: none;
+}
+
+.cookie-consent-inner {
+  width: 100%;
+  max-width: 960px;
+  background: #1f1a14;
+  color: #f1f1f1;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  padding: 1.25rem 1.5rem;
+}
+
+.cookie-consent-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 0.5rem;
+}
+
+.cookie-consent p {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.cookie-consent a {
+  color: #ffd700;
+  text-decoration: underline;
+}
+
+.cookie-consent-options {
+  margin-bottom: 1rem;
+}
+
+.cookie-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+}
+
+.cookie-option input {
+  margin-top: 0.2rem;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.cookie-option strong {
+  display: block;
+  color: #fff;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.cookie-consent-actions .btn {
+  min-width: 120px;
+  font-weight: 600;
+}
+
+.cookie-btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.cookie-btn-secondary:hover,
+.cookie-btn-secondary:focus {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.footer-legal a {
+  margin: 0 0.35rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 576px) {
+  .cookie-consent {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .cookie-consent-inner {
+    padding: 1rem;
+  }
+
+  .cookie-consent-actions .btn {
+    flex: 1 1 45%;
+    min-width: 0;
+  }
+}
+
+.footer-credit {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.footer-credit a {
+  text-decoration: underline;
 }

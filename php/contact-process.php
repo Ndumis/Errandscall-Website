@@ -171,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class='steps'>
             <div class='step'>
               <div class='step-number'>1</div>
-              <div class='step-text'>Our team reviews your message &mdash; usually within <strong>2 hours</strong> during business hours.</div>
+              <div class='step-text'>Our team reviews your message, usually within <strong>2 hours</strong> during business hours.</div>
             </div>
             <div class='step'>
               <div class='step-number'>2</div>
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class='step'>
               <div class='step-number'>3</div>
-              <div class='step-text'>We get to work &mdash; so you can stay on the couch while we handle the paperwork.</div>
+              <div class='step-text'>We get to work, so you can stay on the couch while we handle the paperwork.</div>
             </div>
           </div>
 
@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
         </div>
         <div class='email-footer'>
-          <p><strong>ErrandsCall</strong> &mdash; Vehicle Licensing Made Easy</p>
+          <p><strong>ErrandsCall</strong> | Vehicle Licensing Made Easy</p>
           <p><a href='tel:+27789444633'>+27 78 944 4633</a> &nbsp;|&nbsp; <a href='mailto:info@errandscall.co.za'>info@errandscall.co.za</a></p>
           <p>Mon-Fri: 8AM-5PM | Sat: 9AM-1PM</p>
           <p>&copy; ".date("Y")." ErrandsCall. All rights reserved.</p>

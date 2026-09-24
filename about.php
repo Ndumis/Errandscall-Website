@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About Us | ErrandsCall - Professional Vehicle Licensing Services</title>
-  <meta name="description" content="Learn about ErrandsCall, your trusted partner for vehicle licensing & registration. Level 1 BBBEE personal services agency with expertise in licensing services.">
+  <title>About Us | ErrandsCall Vehicle Licensing</title>
+  <meta name="description" content="Learn about ErrandsCall, your trusted partner for vehicle licensing and registration. A Level 1 BBBEE agency that queues so you don't have to.">
   
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,17 +26,20 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ErrandsCall">
-  <meta property="og:title" content="About Us | ErrandsCall - Professional Vehicle Licensing Services">
-  <meta property="og:description" content="Learn about ErrandsCall, your trusted partner for vehicle licensing & registration. Level 1 BBBEE personal services agency with expertise in licensing services.">
+  <meta property="og:title" content="About Us | ErrandsCall Vehicle Licensing">
+  <meta property="og:description" content="Learn about ErrandsCall, your trusted partner for vehicle licensing and registration. A Level 1 BBBEE agency that queues so you don't have to.">
   <meta property="og:url" content="https://www.errandscall.co.za/about.php">
-  <meta property="og:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta property="og:image" content="https://www.errandscall.co.za/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ErrandsCall vehicle licensing: licence disc, documents and car">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About Us | ErrandsCall - Professional Vehicle Licensing Services">
-  <meta name="twitter:description" content="Learn about ErrandsCall, your trusted partner for vehicle licensing & registration. Level 1 BBBEE personal services agency with expertise in licensing services.">
-  <meta name="twitter:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta name="twitter:title" content="About Us | ErrandsCall Vehicle Licensing">
+  <meta name="twitter:description" content="Learn about ErrandsCall, your trusted partner for vehicle licensing and registration. A Level 1 BBBEE agency that queues so you don't have to.">
+  <meta name="twitter:image" content="https://www.errandscall.co.za/images/og-image.jpg">
 </head>
 <body>
   <!-- Loading Spinner -->
@@ -50,7 +53,7 @@
 
   <!-- Enhanced Banner -->
   <section class="page-header text-white d-flex align-items-center position-relative overflow-hidden" 
-           style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(135deg, #ff8c00 0%, #ffd700 100%); height: 350px;">
+           style="background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/hero/slide-main.jpg') right center / cover no-repeat, #1a0f05; height: 350px;">
     <div class="container position-relative z-index-2" data-aos="fade-up">
       <h1 class="font-weight-bold display-4 mb-3">About ErrandsCall</h1>
       <p class="lead mb-4">Your trusted partner for vehicle licensing & registration services</p>

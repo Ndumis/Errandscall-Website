@@ -1,6 +1,12 @@
 <?php
 header('Content-Type: application/json');
 include('../config/database.php');
+require_once('../includes/rate-limit.php');
+
+// A reset code allows 5 wrong tries (20 per IP address) within its 10 minute life
+const RESET_MAX_PER_ACCOUNT = 5;
+const RESET_MAX_PER_IP = 20;
+const RESET_WINDOW_MINUTES = 10;
 
 $response = ['success' => false, 'message' => ''];
 
@@ -30,6 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn = getDBConnection();
 
+    if (tooManyAttempts($conn, 'reset', $email, RESET_MAX_PER_ACCOUNT, RESET_MAX_PER_IP, RESET_WINDOW_MINUTES)) {
+        $conn->close();
+        $response['message'] = 'Too many incorrect codes. Please request a new code.';
+        echo json_encode($response);
+        exit;
+    }
+
     $stmt = $conn->prepare("SELECT id, reset_token, reset_expiry FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -45,7 +58,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$is_valid) {
             $response['message'] = 'Invalid or expired OTP.';
+            recordAttempt($conn, 'reset', $email);
+
+            // Out of tries: cancel the code so it can't be guessed any further
+            if (tooManyAttempts($conn, 'reset', $email, RESET_MAX_PER_ACCOUNT, PHP_INT_MAX, RESET_WINDOW_MINUTES)) {
+                $cancel_stmt = $conn->prepare("UPDATE users SET reset_token = NULL, reset_expiry = NULL WHERE id = ?");
+                $cancel_stmt->bind_param("i", $user['id']);
+                $cancel_stmt->execute();
+                $cancel_stmt->close();
+                $response['message'] = 'Too many incorrect codes. Please request a new code.';
+            }
         } else {
+            clearAttempts($conn, 'reset', $email);
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             $update_stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL, reset_expiry = NULL WHERE id = ?");
@@ -63,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         $response['message'] = 'Invalid or expired OTP.';
+        recordAttempt($conn, 'reset', $email);
     }
 
     $stmt->close();

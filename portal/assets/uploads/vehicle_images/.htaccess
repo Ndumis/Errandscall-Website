@@ -1,0 +1,13 @@
+# Allow direct access to uploaded images, but block execution of any
+# script files that might get uploaded (defense in depth alongside the
+# extension/MIME validation done in add-vehicle-image.php / add-vehicle.php).
+<FilesMatch "\.(php|php\d|phtml|pl|py|cgi|asp|aspx|sh|exe|htaccess)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag engine off
+</IfModule>

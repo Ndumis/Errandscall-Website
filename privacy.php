@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Privacy Policy | ErrandsCall - Professional Vehicle Licensing Services</title>
+  <title>Privacy Policy | ErrandsCall</title>
   <meta name="description" content="ErrandsCall's privacy policy explaining how we collect, use, and protect your personal information in line with South Africa's POPIA.">
 
   <!-- Bootstrap CSS -->
@@ -26,17 +26,20 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ErrandsCall">
-  <meta property="og:title" content="Privacy Policy | ErrandsCall - Professional Vehicle Licensing Services">
+  <meta property="og:title" content="Privacy Policy | ErrandsCall">
   <meta property="og:description" content="ErrandsCall's privacy policy explaining how we collect, use, and protect your personal information in line with South Africa's POPIA.">
   <meta property="og:url" content="https://www.errandscall.co.za/privacy.php">
-  <meta property="og:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta property="og:image" content="https://www.errandscall.co.za/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ErrandsCall vehicle licensing: licence disc, documents and car">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Privacy Policy | ErrandsCall - Professional Vehicle Licensing Services">
+  <meta name="twitter:title" content="Privacy Policy | ErrandsCall">
   <meta name="twitter:description" content="ErrandsCall's privacy policy explaining how we collect, use, and protect your personal information in line with South Africa's POPIA.">
-  <meta name="twitter:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta name="twitter:image" content="https://www.errandscall.co.za/images/og-image.jpg">
 </head>
 <body>
   <!-- Loading Spinner -->
@@ -50,7 +53,7 @@
 
   <!-- Page Header -->
   <section class="page-header text-center text-white d-flex align-items-center position-relative overflow-hidden"
-           style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(135deg, #ff8c00 0%, #ffd700 100%); height: 280px;">
+           style="background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/hero/slide-main.jpg') right center / cover no-repeat, #1a0f05; height: 280px;">
     <div class="container position-relative z-index-3" data-aos="fade-up">
       <h1 class="font-weight-bold display-4 mb-3">Privacy Policy</h1>
       <p class="lead mb-0">How ErrandsCall collects, uses, and protects your information</p>
@@ -63,7 +66,7 @@
       <div class="row justify-content-center">
         <div class="col-lg-9">
 
-          <p class="text-muted">Last updated: <?php echo date('d F Y'); ?></p>
+          <p class="text-muted">Last updated: 24 September 2026</p>
 
           <p>
             ErrandsCall ("we", "us", "our") provides vehicle licensing and registration errand
@@ -78,6 +81,7 @@
             <li>Your name, email address, and phone number</li>
             <li>Details you provide in the contact form (subject, message, service of interest)</li>
             <li>Identity and vehicle documents you submit to us when processing a licensing service</li>
+            <li>With your consent, information about how you use our website, collected through cookies (see section 4)</li>
           </ul>
 
           <h4 class="mt-5 mb-3">2. How We Use Your Information</h4>
@@ -93,21 +97,51 @@
             government departments (e.g. Department of Transport / licensing authorities) where
             necessary to complete the service you have requested.
           </p>
+          <p>
+            If you agree to analytics or marketing cookies, Google and Meta receive information about
+            your visit to our website (see section 4). They process it under their own privacy policies.
+          </p>
 
-          <h4 class="mt-5 mb-3">4. Data Security</h4>
+          <h4 class="mt-5 mb-3" id="cookies">4. Cookies</h4>
+          <p>
+            Cookies are small files stored on your device when you visit a website. When you first visit
+            our site, we ask which cookies you allow. Analytics and marketing cookies are only used if
+            you agree, and you can change your choice at any time using
+            <a href="#cookies" data-cookie-settings>Cookie Settings</a> (also in the footer of every page).
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="thead-light">
+                <tr><th scope="col">Type</th><th scope="col">Provider</th><th scope="col">Purpose</th><th scope="col">Kept for</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Essential</td><td>ErrandsCall</td><td>Remembers your cookie choice (stored in your browser as <code>ec_cookie_consent</code>)</td><td>Until you clear it</td></tr>
+                <tr><td>Analytics</td><td>Google Analytics</td><td>Counts visits and shows which pages are used, so we can improve the site (<code>_ga</code>, <code>_ga_*</code>)</td><td>Up to 2 years</td></tr>
+                <tr><td>Marketing</td><td>Google Ads</td><td>Measures how well our Google ads work and shows relevant ads (<code>_gcl_au</code>)</td><td>Up to 90 days</td></tr>
+                <tr><td>Marketing</td><td>Meta (Facebook, Instagram)</td><td>Measures how well our Meta ads work and shows relevant ads (<code>_fbp</code>)</td><td>Up to 90 days</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            You can also block or delete cookies in your browser settings. Blocking essential cookies may
+            mean we ask for your cookie choice again on each visit.
+          </p>
+
+          <h4 class="mt-5 mb-3">5. Data Security</h4>
           <p>
             We take reasonable technical and organisational measures to protect your personal
             information against loss, misuse, and unauthorised access.
           </p>
 
-          <h4 class="mt-5 mb-3">5. Your Rights</h4>
+          <h4 class="mt-5 mb-3">6. Your Rights</h4>
           <p>
             Under POPIA, you have the right to access, correct, or request deletion of your
             personal information held by us. To exercise these rights, contact us using the
-            details below.
+            details below. You may also lodge a complaint with the Information Regulator of South Africa
+            (<a href="https://inforegulator.org.za" target="_blank" rel="noopener">inforegulator.org.za</a>).
           </p>
 
-          <h4 class="mt-5 mb-3">6. Contact Us</h4>
+          <h4 class="mt-5 mb-3">7. Contact Us</h4>
           <p>
             For any privacy-related questions, contact us at
             <a href="mailto:info@errandscall.co.za">info@errandscall.co.za</a> or

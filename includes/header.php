@@ -1,6 +1,62 @@
 
 <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
-<a href="https://api.whatsapp.com/send?phone=+27789444633&text=Hi- Please can you assist me?" class="floatWhatsapp" target="_blank"><i class="fab fa-whatsapp my-float"></i></a>
+<!-- Floating WhatsApp button: opens a small form so the user can edit the message before sending.
+     The href stays as a fallback if JavaScript is disabled. -->
+<a href="https://wa.me/27789444633?text=Hi%2C%20please%20can%20you%20assist%20me%3F" class="floatWhatsapp" id="waToggle" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" aria-controls="waPopup" aria-expanded="false"><i class="fab fa-whatsapp my-float"></i></a>
+<div class="wa-popup" id="waPopup" role="dialog" aria-labelledby="waPopupTitle" hidden>
+  <div class="wa-popup-header">
+    <i class="fab fa-whatsapp"></i>
+    <div>
+      <strong id="waPopupTitle">Chat with ErrandsCall</strong>
+      <span>We usually reply within minutes</span>
+    </div>
+    <button type="button" class="wa-popup-close" id="waClose" aria-label="Close">&times;</button>
+  </div>
+  <form class="wa-popup-body" id="waForm">
+    <label for="waMessage">Your message</label>
+    <textarea id="waMessage" rows="4" maxlength="1000" required>Hi, please can you assist me?</textarea>
+    <button type="submit" class="wa-popup-send"><i class="fab fa-whatsapp"></i> Send on WhatsApp</button>
+  </form>
+</div>
+<script>
+(function () {
+  var toggle = document.getElementById('waToggle');
+  var popup = document.getElementById('waPopup');
+  var message = document.getElementById('waMessage');
+
+  function setOpen(open) {
+    popup.hidden = !open;
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) message.focus();
+  }
+
+  toggle.addEventListener('click', function (e) {
+    e.preventDefault();
+    setOpen(popup.hidden);
+  });
+
+  document.getElementById('waClose').addEventListener('click', function () {
+    setOpen(false);
+    toggle.focus();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !popup.hidden) { setOpen(false); toggle.focus(); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!popup.hidden && !popup.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
+  });
+
+  document.getElementById('waForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = message.value.trim();
+    if (!text) { message.focus(); return; }
+    window.open('https://wa.me/27789444633?text=' + encodeURIComponent(text), '_blank', 'noopener');
+    setOpen(false);
+  });
+})();
+</script>
 <!-- header.php -->
 <!-- Local business structured data (SEO / local search / AI answer engines) -->
 <script type="application/ld+json">
@@ -38,10 +94,10 @@
     }
   ],
   "sameAs": [
-    "https://facebook.com/errandscall",
-    "https://twitter.com/errandscall",
+    "https://www.facebook.com/ErrandsCall/",
+    "https://x.com/Errandscall",
     "https://instagram.com/errandscall",
-    "https://linkedin.com/company/errandscall"
+    "https://www.linkedin.com/company/errandscall"
   ]
 }
 </script>
@@ -56,10 +112,10 @@
         </small>
       </div>
       <div class="social-links">
-        <a href="https://facebook.com/errandscall" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://twitter.com/errandscall" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="https://instagram.com/errandscall" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://linkedin.com/company/errandscall" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.facebook.com/ErrandsCall/" target="_blank" rel="noopener" aria-label="ErrandsCall on Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://x.com/Errandscall" target="_blank" rel="noopener" aria-label="ErrandsCall on X"><i class="fab fa-twitter"></i></a>
+        <a href="https://instagram.com/errandscall" target="_blank" rel="noopener" aria-label="ErrandsCall on Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/company/errandscall" target="_blank" rel="noopener" aria-label="ErrandsCall on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
       </div>
     </div>
   </div>
@@ -83,8 +139,7 @@
           <li class="nav-item"><a class="nav-link <?= $currentPage === 'team.php' ? 'active' : '' ?>" href="team.php">Team</a></li>
           <li class="nav-item"><a class="nav-link <?= $currentPage === 'downloads.php' ? 'active' : '' ?>" href="downloads.php">Downloads</a></li>
           <li class="nav-item"><a class="nav-link <?= $currentPage === 'contact.php' ? 'active' : '' ?>" href="contact.php">Contact</a></li>
-          <!--<li class="nav-item"><a class="btn btn-light btn-sm ml-2" href="portal/index.php">Login</a></li> -->
-          <li class="nav-item"><a class="btn btn-warning btn-sm ml-2" href="portal/index.php">Login</a></li>
+          <li class="nav-item"><a class="btn btn-warning btn-sm ml-2" href="portal/index.php" rel="nofollow"><i class="fas fa-user-lock mr-1"></i>Client Login</a></li>
         </ul>
       </div>
     </div>

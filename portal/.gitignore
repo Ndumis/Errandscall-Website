@@ -7,11 +7,11 @@ exports/*
 !exports/.gitkeep
 
 # Uploaded user content
-assets/uploads/*
+# (ignore the files inside each folder, not the folders, so the .htaccess rules stay tracked)
+assets/uploads/*.*
+assets/uploads/*/*
 !assets/uploads/.gitkeep
-!assets/uploads/id_documents/.htaccess
-!assets/uploads/documents/.htaccess
-!assets/uploads/vehicle_images/.htaccess
+!assets/uploads/*/.htaccess
 
 # Logs
 *.log

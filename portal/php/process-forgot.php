@@ -6,6 +6,7 @@ ini_set('display_errors', '0');
 
 header('Content-Type: application/json');
 include('../config/database.php');
+require_once('../includes/rate-limit.php');
 
 $response = ['success' => false, 'message' => ''];
 
@@ -19,6 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $conn = getDBConnection();
+
+    // At most 3 reset emails per address, and 10 per IP address, every 15 minutes
+    if (tooManyAttempts($conn, 'forgot', $email, 3, 10, 15)) {
+        $conn->close();
+        $response['message'] = 'Too many reset requests. Please wait 15 minutes and try again.';
+        echo json_encode($response);
+        exit;
+    }
+    recordAttempt($conn, 'forgot', $email);
+
+    // Same reply whether or not the email is registered, so accounts can't be discovered
+    $generic_message = 'If that email address is registered, we have sent it a 6-digit reset code.';
 
     $stmt = $conn->prepare("SELECT id, fullname FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -37,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $update_stmt->bind_param("ssi", $otp_hash, $expiry, $user['id']);
 
         if ($update_stmt->execute()) {
+            // A fresh code gets a fresh set of tries (see process-reset.php)
+            clearAttempts($conn, 'reset', $email);
+
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= "From: ErrandsCall <info@errandscall.co.za>\r\n";
@@ -97,13 +113,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mailSent = mail($email, 'Your ErrandsCall Password Reset Code', $body, $headers);
 
-            $response['success'] = true;
+            // Show the code on screen only when testing on this computer (localhost) without email.
+            // Never on the live site: anyone could request a code for someone else's email.
+            $is_local = in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)
+                && in_array($_SERVER['SERVER_NAME'] ?? '', ['localhost', '127.0.0.1'], true);
+
             if ($mailSent) {
-                $response['message'] = 'An OTP has been sent to your email address.';
-            } else {
-                // Demo-mode fallback when local mail() is unavailable
-                $response['message'] = 'Email delivery is unavailable in this environment. Your OTP code is: ' . $otp;
+                $response['success'] = true;
+                $response['message'] = $generic_message;
+            } elseif ($is_local) {
+                $response['success'] = true;
+                $response['message'] = 'Email delivery is unavailable on localhost. Your OTP code is: ' . $otp;
                 $response['otp'] = $otp;
+            } else {
+                error_log('Password reset email could not be sent to user ' . $user['id']);
+                $response['message'] = 'We could not send the reset email right now. Please try again later or contact us.';
             }
         } else {
             $response['message'] = 'Error generating OTP. Please try again.';
@@ -111,7 +135,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $update_stmt->close();
     } else {
-        $response['message'] = 'Email not found in our system.';
+        $response['success'] = true;
+        $response['message'] = $generic_message;
     }
 
     $stmt->close();

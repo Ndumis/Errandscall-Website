@@ -23,12 +23,23 @@
       </div>
       <div class="col-md-3">
         <h5>Follow Us</h5>
-        <a href="#" class="text-white mr-2"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="text-white mr-2"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-white mr-2"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.facebook.com/ErrandsCall/" class="text-white mr-2" target="_blank" rel="noopener" aria-label="ErrandsCall on Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://x.com/Errandscall" class="text-white mr-2" target="_blank" rel="noopener" aria-label="ErrandsCall on X"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.linkedin.com/company/errandscall" class="text-white mr-2" target="_blank" rel="noopener" aria-label="ErrandsCall on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
       </div>
     </div>
     <hr class="bg-light">
-    <div class="text-center pb-3">&copy; 2025 ErrandsCall. All Rights Reserved.</div>
+    <div class="footer-legal text-center pb-3">
+      <a href="privacy.php" class="text-white">Privacy Policy</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="terms.php" class="text-white">Terms &amp; Conditions</a>
+      <span aria-hidden="true">&middot;</span>
+      <a href="privacy.php#cookies" class="text-white" data-cookie-settings>Cookie Settings</a>
+    </div>
+    <div class="text-center pb-3">
+      &copy; <?php echo date('Y'); ?> ErrandsCall. All Rights Reserved.
+      <span class="footer-credit">Website designed by <a href="https://www.thekconsult.co.za/" class="text-white" target="_blank" rel="noopener">KConsulting Firm (Pty) Ltd</a></span>
+    </div>
   </div>
 </footer>
+<?php include __DIR__ . '/cookie-consent.php'; ?>

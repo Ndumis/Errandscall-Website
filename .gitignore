@@ -6,3 +6,8 @@
 
 ### docx ###
 .docx/
+### Private data (never commit) ###
+# Database backups contain customer data and password hashes
+portal/db/*.sql
+# ...except the clean setup script (structure, car data and admin only, no customer data)
+!portal/db/schema.sql

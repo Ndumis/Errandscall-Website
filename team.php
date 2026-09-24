@@ -29,14 +29,17 @@
   <meta property="og:title" content="Our Team | ErrandsCall - Meet Our Professional Team">
   <meta property="og:description" content="Meet the dedicated professionals behind ErrandsCall who are committed to providing exceptional vehicle licensing services.">
   <meta property="og:url" content="https://www.errandscall.co.za/team.php">
-  <meta property="og:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta property="og:image" content="https://www.errandscall.co.za/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ErrandsCall vehicle licensing: licence disc, documents and car">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Our Team | ErrandsCall - Meet Our Professional Team">
   <meta name="twitter:description" content="Meet the dedicated professionals behind ErrandsCall who are committed to providing exceptional vehicle licensing services.">
-  <meta name="twitter:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta name="twitter:image" content="https://www.errandscall.co.za/images/og-image.jpg">
 </head>
 <body>
   <!-- Loading Spinner -->
@@ -50,7 +53,7 @@
 
   <!-- Enhanced Page Header -->
   <section class="page-header text-center text-white d-flex align-items-center position-relative overflow-hidden" 
-           style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(135deg, #ff8c00 0%, #ffd700 100%); height: 300px;">
+           style="background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/hero/slide-ownership.jpg') right center / cover no-repeat, #1a0f05; height: 300px;">
     <div class="container position-relative z-index-3" data-aos="fade-up">
       <h1 class="font-weight-bold display-4 mb-3">Meet Our Team</h1>
       <p class="lead mb-4">The dedicated professionals behind ErrandsCall's success</p>
@@ -136,7 +139,7 @@
             <div class="row no-gutters h-100">
               <div class="col-md-5">
                 <div class="team-image-container">
-                  <img src="images/team/morena.jpg" alt="Morena Motapanyane" class="team-img">
+                  <img src="images/team/morena-photo.jpg" alt="Morena Motapanyane" class="team-img" width="562" height="750" loading="lazy" decoding="async">
                   <div class="team-overlay">
                     <div class="team-social">
                       <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -182,7 +185,7 @@
             <div class="row no-gutters h-100">
               <div class="col-md-5">
                 <div class="team-image-container">
-                  <img src="images/team/sthembiso.jpg" alt="S'thembiso Clement Miya" class="team-img">
+                  <img src="images/team/sthembiso-photo.jpg" alt="S'thembiso Clement Miya" class="team-img" width="600" height="600" loading="lazy" decoding="async">
                   <div class="team-overlay">
                     <div class="team-social">
                       <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -228,7 +231,7 @@
             <div class="row no-gutters h-100">
               <div class="col-md-5">
                 <div class="team-image-container">
-                  <img src="images/team/jonathan.jpg" alt="Jonathan Shai" class="team-img">
+                  <img src="images/team/jonathan-photo.jpg" alt="Jonathan Shai" class="team-img" width="360" height="450" loading="lazy" decoding="async">
                   <div class="team-overlay">
                     <div class="team-social">
                       <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -274,7 +277,7 @@
             <div class="row no-gutters h-100">
               <div class="col-md-5">
                 <div class="team-image-container">
-                  <img src="images/team/shay.jpg" alt="Shay Mackay" class="team-img">
+                  <img src="images/team/shay-photo.jpg" alt="Shay Mackay" class="team-img" width="562" height="750" loading="lazy" decoding="async">
                   <div class="team-overlay">
                     <div class="team-social">
                       <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -324,7 +327,7 @@
             <div class="row no-gutters h-100">
               <div class="col-md-5">
                 <div class="team-image-container">
-                  <img src="images/team/lonwabo.jpg" alt="Lonwabo Mzolisi Maqokolo" class="team-img">
+                  <img src="images/team/lonwabo-photo.jpg" alt="Lonwabo Mzolisi Maqokolo" class="team-img" width="600" height="699" loading="lazy" decoding="async">
                   <div class="team-overlay">
                     <div class="team-social">
                       <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -370,7 +373,7 @@
             <div class="row no-gutters h-100">
               <div class="col-md-5">
                 <div class="team-image-container">
-                  <img src="images/team/sphamandla.jpg" alt="Sphamandla Mlaba" class="team-img">
+                  <img src="images/team/sphamandla-photo.jpg" alt="Sphamandla Mlaba" class="team-img" width="600" height="716" loading="lazy" decoding="async">
                   <div class="team-overlay">
                     <div class="team-social">
                       <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>

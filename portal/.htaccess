@@ -1,0 +1,5 @@
+# Keep the client portal out of search results. robots.txt deliberately does NOT
+# block /portal/, because search engines must be able to fetch a page to see this rule.
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

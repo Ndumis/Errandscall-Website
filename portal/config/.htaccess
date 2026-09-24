@@ -1,0 +1,2 @@
+# Not web-accessible: only used by PHP on the server.
+Require all denied

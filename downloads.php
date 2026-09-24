@@ -29,14 +29,17 @@
   <meta property="og:title" content="Downloads | ErrandsCall - Important Documents & Forms">
   <meta property="og:description" content="Download important forms and documents for vehicle licensing services including consent forms, declaration letters, and application forms.">
   <meta property="og:url" content="https://www.errandscall.co.za/downloads.php">
-  <meta property="og:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta property="og:image" content="https://www.errandscall.co.za/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ErrandsCall vehicle licensing: licence disc, documents and car">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Downloads | ErrandsCall - Important Documents & Forms">
   <meta name="twitter:description" content="Download important forms and documents for vehicle licensing services including consent forms, declaration letters, and application forms.">
-  <meta name="twitter:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta name="twitter:image" content="https://www.errandscall.co.za/images/og-image.jpg">
 </head>
 <body>
   <!-- Loading Spinner -->
@@ -50,7 +53,7 @@
 
   <!-- Enhanced Page Header -->
   <section class="page-header text-center text-white d-flex align-items-center position-relative overflow-hidden" 
-           style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(135deg, #ff8c00 0%, #ffd700 100%); height: 300px;">
+           style="background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/hero/slide-renewal.jpg') right center / cover no-repeat, #1a0f05; height: 300px;">
     <div class="container position-relative z-index-3" data-aos="fade-up">
       <h1 class="font-weight-bold display-4 mb-3">Downloads</h1>
       <p class="lead mb-4">Important documents and forms available for download</p>

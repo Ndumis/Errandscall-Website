@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Errands Call - Professional Vehicle Licensing Services</title>
+  <title>ErrandsCall | Professional Vehicle Licensing Services</title>
   <meta name="description" content="ErrandsCall provides professional vehicle licensing services including license disc renewal, change of ownership, and fine payments.">
   
   <!-- Bootstrap CSS (CDN) -->
@@ -27,17 +27,20 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ErrandsCall">
-  <meta property="og:title" content="ErrandsCall - Professional Vehicle Licensing Services">
+  <meta property="og:title" content="ErrandsCall | Professional Vehicle Licensing Services">
   <meta property="og:description" content="ErrandsCall provides professional vehicle licensing services including license disc renewal, change of ownership, and fine payments.">
   <meta property="og:url" content="https://www.errandscall.co.za/">
-  <meta property="og:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta property="og:image" content="https://www.errandscall.co.za/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ErrandsCall vehicle licensing: licence disc, documents and car">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ErrandsCall - Professional Vehicle Licensing Services">
+  <meta name="twitter:title" content="ErrandsCall | Professional Vehicle Licensing Services">
   <meta name="twitter:description" content="ErrandsCall provides professional vehicle licensing services including license disc renewal, change of ownership, and fine payments.">
-  <meta name="twitter:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta name="twitter:image" content="https://www.errandscall.co.za/images/og-image.jpg">
 </head>
 <body>
   <!-- Loading Spinner -->
@@ -58,12 +61,12 @@
     </ol>
     <div class="carousel-inner">
       <!-- Slide 1 -->
-      <div class="carousel-item active" style="background-image: url('images/hero/slide1.jpg');">
+      <div class="carousel-item active" style="background-image: url('images/hero/slide-main.jpg');">
         <div class="carousel-content">
           <div class="carousel-caption">
             <span class="hero-eyebrow">Cape Town's Trusted Licensing Partner</span>
             <h1>We Handle Your Licensing Needs</h1>
-            <p>Fast, reliable, and professional service at your fingertips — so you can stay on the couch while we do the queuing.</p>
+            <p>Fast, reliable, and professional service at your fingertips, so you can stay on the couch while we do the queuing.</p>
             <ul class="hero-features">
               <li><i class="fas fa-check-circle"></i>Same-Day Service</li>
               <li><i class="fas fa-check-circle"></i>Free Pickup &amp; Delivery</li>
@@ -74,12 +77,12 @@
         </div>
       </div>
       <!-- Slide 2 -->
-      <div class="carousel-item" style="background-image: url('images/hero/slide2.jpg');">
+      <div class="carousel-item" style="background-image: url('images/hero/slide-renewal.jpg');">
         <div class="carousel-content">
           <div class="carousel-caption">
             <span class="hero-eyebrow">License Disc Renewal</span>
             <h2>Never Miss a Renewal Again</h2>
-            <p>Quick and convenient license renewals — no queues, no stress, handled from start to finish on your behalf.</p>
+            <p>Quick and convenient license renewals. No queues, no stress, handled from start to finish on your behalf.</p>
             <ul class="hero-features">
               <li><i class="fas fa-check-circle"></i>24-48 Hour Turnaround</li>
               <li><i class="fas fa-check-circle"></i>Reminder Service</li>
@@ -89,7 +92,7 @@
         </div>
       </div>
       <!-- Slide 3 -->
-      <div class="carousel-item" style="background-image: url('images/hero/slide3.jpg');">
+      <div class="carousel-item" style="background-image: url('images/hero/slide-ownership.jpg');">
         <div class="carousel-content">
           <div class="carousel-caption">
             <span class="hero-eyebrow">Change of Ownership</span>

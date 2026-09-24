@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Services | ErrandsCall - Professional Vehicle Licensing Services</title>
+  <title>Vehicle Licensing Services | ErrandsCall</title>
   <meta name="description" content="Comprehensive vehicle licensing services including license renewals, change of ownership, driver's license bookings, and more. Save time and avoid queues.">
   
   <!-- Bootstrap -->
@@ -26,17 +26,20 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ErrandsCall">
-  <meta property="og:title" content="Services | ErrandsCall - Professional Vehicle Licensing Services">
+  <meta property="og:title" content="Vehicle Licensing Services | ErrandsCall">
   <meta property="og:description" content="Comprehensive vehicle licensing services including license renewals, change of ownership, driver's license bookings, and more. Save time and avoid queues.">
   <meta property="og:url" content="https://www.errandscall.co.za/services.php">
-  <meta property="og:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta property="og:image" content="https://www.errandscall.co.za/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="ErrandsCall vehicle licensing: licence disc, documents and car">
   <meta property="og:locale" content="en_ZA">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Services | ErrandsCall - Professional Vehicle Licensing Services">
+  <meta name="twitter:title" content="Vehicle Licensing Services | ErrandsCall">
   <meta name="twitter:description" content="Comprehensive vehicle licensing services including license renewals, change of ownership, driver's license bookings, and more. Save time and avoid queues.">
-  <meta name="twitter:image" content="https://www.errandscall.co.za/images/logo.png">
+  <meta name="twitter:image" content="https://www.errandscall.co.za/images/og-image.jpg">
 </head>
 <body>
   <!-- Loading Spinner -->
@@ -50,7 +53,7 @@
 
     <!-- Enhanced Page Header -->
   <section class="page-header text-center text-white d-flex align-items-center position-relative overflow-hidden" 
-           style="background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(135deg, #ff8c00 0%, #ffd700 100%); height: 300px;">
+           style="background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/hero/slide-renewal.jpg') right center / cover no-repeat, #1a0f05; height: 300px;">
     <div class="container position-relative z-index-3" data-aos="fade-up">
       <h1 class="font-weight-bold display-4 mb-3">Our Services</h1>
       <p class="lead mb-4">We simplify your life by taking away the time you would spend waiting at the Traffic Department.</p>
@@ -105,7 +108,7 @@
             </div>
             <div class="card-body text-center">
               <h5 class="card-title font-weight-bold">Vehicle License Renewal</h5>
-              <p class="text-muted">Annual license disc renewals made easy – no queues, no penalties, just convenience.</p>
+              <p class="text-muted">Annual license disc renewals made easy. No queues, no penalties, just convenience.</p>
               <div class="service-meta mb-3">
                 <span class="badge badge-warning">2-3 days</span>
                 <span class="badge badge-light ml-1">Popular</span>

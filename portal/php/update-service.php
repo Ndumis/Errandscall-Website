@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if (!validateUploadedFile($file, $allowed_types, $allowed_mime_types, 10 * 1024 * 1024)) {
                     $file_extension = pathinfo($_FILES['documents']['name'][$i], PATHINFO_EXTENSION);
-                    $filename = 'doc_' . $service_id . '_' . time() . '_' . $i . '.' . $file_extension;
+                    $filename = 'doc_' . bin2hex(random_bytes(16)) . '.' . strtolower($file_extension);
                     $target_path = $upload_dir . $filename;
 
                     if (move_uploaded_file($_FILES['documents']['tmp_name'][$i], $target_path)) {

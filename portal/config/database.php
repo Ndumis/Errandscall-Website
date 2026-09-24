@@ -186,6 +186,17 @@ if (!function_exists('createTables')) {
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 		)";
 
+		// Failed login / reset attempts, used by includes/rate-limit.php
+		$login_attempts_sql = "CREATE TABLE IF NOT EXISTS login_attempts (
+			id INT(11) AUTO_INCREMENT PRIMARY KEY,
+			attempt_type VARCHAR(20) NOT NULL,
+			identifier VARCHAR(255) NOT NULL,
+			ip_address VARCHAR(45) NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			INDEX idx_attempt_identifier (attempt_type, identifier(150), created_at),
+			INDEX idx_attempt_ip (attempt_type, ip_address, created_at)
+		)";
+
 		$tables = [
 			$users_sql,
 			$vehicles_sql,
@@ -198,7 +209,8 @@ if (!function_exists('createTables')) {
 			$car_models_sql,
 			$service_ratings_sql,
 			$worker_ratings_summary_sql,
-			$email_templates_sql
+			$email_templates_sql,
+			$login_attempts_sql
 		];
 		
 		foreach ($tables as $sql) {
